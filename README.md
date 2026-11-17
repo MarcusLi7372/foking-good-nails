@@ -12,6 +12,8 @@ Website for [@foking.good.nails](https://www.instagram.com/foking.good.nails/), 
 - **Order**: add or take an inspo photo, a thumb-beside-a-coin photo, then send everything as one order card by email or Instagram DM
 - **Contact**: Instagram links and order rules
 
+Orders go to foking.good.nails@gmail.com through FormSubmit. Customers pay by Interac e-Transfer to the same email after the price is confirmed by DM.
+
 ## Editing
 Edit `src/site.html`, then run:
 
@@ -22,6 +24,7 @@ python3 src/build.py
 That rebuilds `index.html`. Photos live in `src/photos/`, the logo is `src/logo.webp`.
 
 ## Still needed before launch
-- `ORDER_EMAIL` in `src/site.html` — the email orders get sent to (orders only preview until this is set)
+- Activate FormSubmit: the first order sends a one-time "Activate form" email to foking.good.nails@gmail.com. Click it, or orders won't arrive
+- Original high-res ambassador photo (the banner uses a crop from a screenshot)
 - Original high-res logo file
 - Her OK to use her Instagram photos

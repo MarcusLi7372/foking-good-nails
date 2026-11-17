@@ -184,6 +184,20 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .stamps button:nth-child(5).on,.stamps button:nth-child(10).on{background:var(--gold);border-color:var(--gold)}
 @keyframes stamp{from{transform:scale(1.5) rotate(-12deg)}}
 
+/* ambassador banner, styled after her Instagram post */
+.amb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:center;gap:26px;margin-top:30px;padding:26px clamp(18px,3vw,34px);border-radius:24px;text-decoration:none;color:var(--ink);background:repeating-linear-gradient(90deg,#F6DDE5 0 14px,#FBEEF2 14px 28px);border:1.5px solid var(--line);position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.2,.9,.2,1.3),box-shadow .3s}
+.amb:hover{transform:translateY(-3px);box-shadow:0 16px 34px -18px rgba(142,26,69,.55)}
+.amb-txt{background:#FBEEF2;border-radius:18px;padding:18px 20px;display:grid;justify-items:start;gap:4px}
+.amb-k{font-family:var(--brush);color:#C2577F;font-size:34px;line-height:.9}
+.amb b{font-family:Georgia,"Times New Roman",serif;font-weight:400;color:#C2577F;font-size:clamp(30px,4vw,46px);letter-spacing:-.01em;line-height:1}
+.amb p{margin:8px 0 10px;font-size:15px;color:var(--muted);max-width:40ch}
+.amb-ph{position:relative}
+.amb-ph img{width:100%;aspect-ratio:478/169;object-fit:cover;display:block;border:3px solid #C2577F;border-radius:6px;transform:rotate(1.5deg);box-shadow:0 12px 24px -14px rgba(58,31,40,.5);transition:transform .4s cubic-bezier(.2,.9,.2,1.3)}
+.amb:hover .amb-ph img{transform:rotate(-1deg) scale(1.03)}
+.amb-ph span{position:absolute;right:-6px;bottom:-18px;background:#fff;border:1.5px solid #C2577F;color:#C2577F;font-family:Georgia,serif;font-size:28px;line-height:1;padding:6px 12px;border-radius:6px;text-align:center;transform:rotate(-4deg)}
+.amb-ph span small{display:block;font-family:var(--type);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+@media (max-width:960px){.amb{grid-template-columns:minmax(0,1fr);gap:22px}.amb-ph{order:-1}}
+
 /* tab change: a raspberry frosting wipe with her logo */
 .wipe{position:fixed;inset:0;z-index:70;pointer-events:none;background:var(--rasp);transform:translateX(-120%);display:grid;place-items:center}
 .wipe::after{content:"";position:absolute;top:0;bottom:0;right:-20px;width:21px;background:radial-gradient(circle at 0 50%,var(--rasp) 13px,transparent 13.5px) 0 0/21px 28px repeat-y}
@@ -345,6 +359,12 @@ textarea.inp{min-height:84px;resize:vertical}
       </div>
     </div>
     <div class="marq" aria-label="Recent sets"><div class="tr" id="marq"></div></div>
+    <a class="amb" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">
+      <div class="amb-txt"><span class="amb-k">Join the</span><b>AMBASSADOR</b><span class="amb-k">team</span>
+        <p>Got what it takes to promote my business? Post social media content, share feedback and show your creativity.</p>
+        <span class="btn btn-fill">Apply now in my DMs</span></div>
+      <div class="amb-ph"><img src='PH_ambassador' alt="Foking Good Nails owner showing off her nails"><span>FGN<small>ambassador</small></span></div>
+    </a>
   </section>
 
   <!-- DESIGN -->
@@ -385,11 +405,11 @@ textarea.inp{min-height:84px;resize:vertical}
     <div class="estim" aria-live="polite">
       <div class="chosen"><span class="lbl">your set</span><span id="eName">Plain colour</span></div>
       <div><span class="lbl" style="margin-bottom:4px">length</span><div class="seg" id="eLen" role="group" aria-label="Length"></div></div>
-      <div class="amt"><span class="lbl">about</span><b id="cOut">$10</b></div>
+      <div class="amt"><span class="lbl">starts at</span><b id="cOut">$10</b></div>
       <a class="btn btn-white" href="#order">Order</a>
     </div>
     <div class="pfoot" data-stagger>
-      <div class="fineprint"><p><b>Length and shape change the price.</b> Longer sets and fancy shapes take more time and more paint.</p><p>Estimates are a rough guide. I'll confirm your exact price by DM before I start.</p><p><b>Paying:</b> once I confirm your price, send it by Interac e-Transfer.</p></div>
+      <div class="fineprint"><p><b>Length and shape change the price.</b> Longer sets and fancy shapes take more time and more paint.</p><p><b>Estimates are a starting point.</b> Detailed or complicated designs can cost more. I'll look at your inspo and confirm your exact price by DM before you pay.</p><p><b>Paying:</b> once I confirm your price, send it by Interac e-Transfer to <b>foking.good.nails@gmail.com</b>.</p></div>
       <div class="card"><h3>the nail card</h3><p>Buy 5 sets and save 10%. Your 10th set is free. Tap a stamp to fill it up.</p><div class="stamps" id="stamps"></div></div>
     </div>
   </section>
@@ -458,7 +478,7 @@ textarea.inp{min-height:84px;resize:vertical}
             <div class="send">
               <button class="btn btn-fill" id="sendBtn">Send my order</button>
               <a class="btn btn-line" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">DM it to me instead</a>
-              <div class="note"><b>No payment here</b>I'll DM or email you to confirm your price, then you pay by Interac e-Transfer.</div>
+              <div class="note"><b>No payment here</b>I'll DM or email you to confirm your price, then you pay by Interac e-Transfer to foking.good.nails@gmail.com.</div>
               <div class="note"><b>Sending by DM?</b>Press and hold the order card to save it, then send it to @foking.good.nails.</div>
               <p class="err" id="err4"></p>
             </div>
@@ -509,7 +529,7 @@ textarea.inp{min-height:84px;resize:vertical}
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000)}
-const ORDER_EMAIL='';
+const ORDER_EMAIL='foking.good.nails@gmail.com';
 
 /* ---------- loading screen: polish bottle fills up ---------- */
 (function(){const L=$('#loader'),t0=performance.now(),MIN=reduce?200:2200,msgs=['mixing your colours','shaping the tips','adding the bows','almost dry'];let done=false;
@@ -777,7 +797,7 @@ $('#sendBtn').onclick=async e=>{const btn=$('#sendBtn'),x=e.clientX,y=e.clientY;
     fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Thumb',o.side+' thumb, '+o.coin+' coin');fd.append('Notes',$('#fNotes').value.trim()||'-');
     fd.append('attachment',await (await fetch(cardURL)).blob(),'order-card.jpg');
     const r=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(ORDER_EMAIL),{method:'POST',body:fd,headers:{Accept:'application/json'}});if(!r.ok)throw 0;
-    finish("Thank you! I'll message you soon to confirm your price.",x,y)}
+    finish("Thank you! I'll message you soon to confirm your price. Then you can e-Transfer it to foking.good.nails@gmail.com.",x,y)}
   catch(err){$('#err4').textContent="Your order didn't send. Try again, or DM me the order card.";btn.disabled=false;btn.textContent='Send my order'}};
 function finish(msg,x,y){$$('[data-step]').forEach(s=>s.hidden=true);$('#doneMsg').textContent=msg;$('#doneBox').hidden=false;$$('#stepnav li').forEach(li=>{li.classList.remove('on');li.classList.add('done')});bowBurst(x||innerWidth/2,y||innerHeight/2,34)}
 $('#again').onclick=()=>{Object.assign(o,{inspo:[],thumb:[],side:'',coin:'',shape:'',length:'',extras:[]});renderT('inspo');renderT('thumb');$$('.opanel .pill').forEach(x=>x.setAttribute('aria-pressed','false'));['#fName','#fIg','#fEmail','#fDate','#fNotes'].forEach(id=>$(id).value='');const b=$('#sendBtn');b.disabled=false;b.textContent='Send my order';go(1)};
