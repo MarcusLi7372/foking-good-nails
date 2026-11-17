@@ -449,17 +449,22 @@ textarea.inp{min-height:84px;resize:vertical}
         </div>
         <div data-step="2" hidden>
           <h3>size with a coin</h3>
-          <p class="lead">A coin next to your thumb tells me exactly how big to make your nails.</p>
+          <p class="lead">A photo of your fingers with a coin beside them tells me exactly how big to make each nail.</p>
           <div class="coin">
-            <svg viewBox="0 0 150 120" aria-hidden="true"><rect x="1" y="1" width="148" height="118" rx="12" fill="#FFF" stroke="#F3B6C8" stroke-width="2"/><path d="M30 118V58c0-14 8-24 20-24s20 10 20 24v60" fill="#F2CDBB" stroke="#C99381" stroke-width="2"/><rect x="37" y="40" width="26" height="30" rx="12" fill="#FBE3EA" stroke="#CC4D82" stroke-width="2"/><circle cx="108" cy="64" r="22" fill="#E3C778" stroke="#A9822F" stroke-width="3"/><text x="108" y="69" text-anchor="middle" font-family="Courier Prime, monospace" font-size="13" font-weight="700" fill="#6B5114" id="coinTxt">$2</text></svg>
-            <ol><li>Hand flat on a table</li><li>Coin right beside your thumbnail</li><li>Photo from straight above, good light</li></ol>
+            <svg viewBox="0 0 150 120" aria-hidden="true"><rect x="1" y="1" width="148" height="118" rx="12" fill="#FFF" stroke="#F3B6C8" stroke-width="2"/>
+<g fill="#F2CDBB" stroke="#C99381" stroke-width="1.6"><path d="M22 119V78c0-8 4-12 10-12h44c6 0 10 4 10 12v41z"/>
+<rect x="26" y="30" width="12" height="46" rx="6"/><rect x="40" y="20" width="12" height="56" rx="6"/><rect x="54" y="24" width="12" height="52" rx="6"/><rect x="68" y="36" width="11" height="42" rx="5.5"/>
+<path d="M84 96c4-10 12-22 18-24 5-2 8 2 6 7-3 8-10 16-16 22z"/></g>
+<g fill="#FBE3EA" stroke="#CC4D82" stroke-width="1.6"><rect x="28" y="32" width="8" height="11" rx="4"/><rect x="42" y="22" width="8" height="12" rx="4"/><rect x="56" y="26" width="8" height="12" rx="4"/><rect x="69.5" y="38" width="8" height="10" rx="4"/><ellipse cx="105" cy="76" rx="4.5" ry="5.5" transform="rotate(30 105 76)"/></g>
+<circle cx="122" cy="34" r="17" fill="#E3C46A" stroke="#B8962F" stroke-width="2"/><circle cx="122" cy="34" r="11" fill="none" stroke="#B8962F" stroke-width="1.2" opacity=".6"/><text id="coinTxt" x="122" y="38.5" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="12" fill="#6B5418">coin</text></svg>
+            <ol><li>Hand flat on a table, all 5 fingers spread</li><li>Coin right beside your fingers</li><li>Photo from straight above, good light</li><li>One photo per hand</li></ol>
           </div>
-          <div class="field"><b>Which thumb?</b><div class="row" id="side" role="group" aria-label="Which thumb"><button class="pill" data-v="Left" aria-pressed="false">Left</button><button class="pill" data-v="Right" aria-pressed="false">Right</button></div></div>
+          <div class="field"><b>Which hands?</b><div class="row" id="side" role="group" aria-label="Which hands"><button class="pill" data-v="Both hands" aria-pressed="false">Both hands</button><button class="pill" data-v="Left hand" aria-pressed="false">Left hand only</button><button class="pill" data-v="Right hand" aria-pressed="false">Right hand only</button></div></div>
           <div class="field"><b>Which coin?</b><div class="row" id="coin" role="group" aria-label="Which coin"><button class="pill" data-v="25¢" aria-pressed="false">25¢</button><button class="pill" data-v="$1" aria-pressed="false">$1</button><button class="pill" data-v="$2" aria-pressed="false">$2</button></div></div>
           <div class="drop" id="drop2">
-            <div class="pick"><label class="btn btn-fill btn-sm" for="thumbCam">Take thumb photo</label><label class="btn btn-line btn-sm" for="thumbFile">Choose photo</label></div>
+            <div class="pick"><label class="btn btn-fill btn-sm" for="thumbCam">Take hand photo</label><label class="btn btn-line btn-sm" for="thumbFile">Choose photos</label></div>
             <input type="file" id="thumbCam" accept="image/*" capture="environment" hidden>
-            <input type="file" id="thumbFile" accept="image/*" hidden>
+            <input type="file" id="thumbFile" accept="image/*" multiple hidden>
           </div>
           <div class="thumbs" id="thumbList"></div>
           <p class="err" id="err2"></p>
@@ -519,7 +524,7 @@ textarea.inp{min-height:84px;resize:vertical}
       </div>
       <div class="rules" data-stagger>
         <div class="rule"><b>order 1 week ahead</b><p>Every set is hand-painted, so please give me at least a week.</p></div>
-        <div class="rule"><b>size photo needed</b><p>Your thumb beside a coin lets me size your whole set.</p></div>
+        <div class="rule"><b>size photo needed</b><p>Your fingers beside a coin let me size your whole set.</p></div>
         <div class="rule"><b>ambassador team</b><p>Creative, love nails, 14+ and good with social media? DM me to apply.</p></div>
         <div class="rule"><b>based in Vaughan</b><p>I'll message you to set up pickup once your set is ready.</p></div>
       </div>
@@ -769,15 +774,15 @@ opills($('#oShape'),SHAPES,'shape');opills($('#oLen'),Object.keys(LEN3),'length'
 function shrink(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.85))};im.onerror=rej;im.src=src})}
 function readFile(f){return new Promise((res,rej)=>{if(!f.type.startsWith('image/'))return rej();const fr=new FileReader();fr.onload=()=>shrink(fr.result).then(res,rej);fr.onerror=rej;fr.readAsDataURL(f)})}
 async function addInspoSrc(src){if(o.inspo.length>=4){toast('Up to 4 inspo photos');return}o.inspo.push(await shrink(src));renderT('inspo')}
-async function addFiles(files,key,max){for(const f of files){if(o[key].length>=max){toast(max===1?'One thumb photo is enough':'Up to 4 inspo photos');break}try{o[key].push(await readFile(f))}catch(e){toast("That file isn't a photo")}}renderT(key)}
+async function addFiles(files,key,max){for(const f of files){if(o[key].length>=max){toast(key==='thumb'?'One photo per hand is enough':'Up to 4 inspo photos');break}try{o[key].push(await readFile(f))}catch(e){toast("That file isn't a photo")}}renderT(key)}
 function renderT(key){const box=key==='inspo'?$('#inspoList'):$('#thumbList');box.innerHTML='';o[key].forEach((src,i)=>{const f=document.createElement('figure');f.innerHTML='<img alt=""><button type="button" aria-label="Remove photo">×</button>';f.querySelector('img').src=src;f.querySelector('button').onclick=()=>{o[key].splice(i,1);renderT(key)};box.appendChild(f)});if(o.inspo.length)$('#err1').textContent='';if(o.thumb.length)$('#err2').textContent=''}
-[['#inspoCam','inspo',4],['#inspoFile','inspo',4],['#thumbCam','thumb',1],['#thumbFile','thumb',1]].forEach(([id,k,m])=>$(id).addEventListener('change',e=>{addFiles([...e.target.files],k,m);e.target.value=''}));
-[['#drop1','inspo',4],['#drop2','thumb',1]].forEach(([id,k,m])=>{const d=$(id);d.addEventListener('dragover',e=>{e.preventDefault();d.classList.add('over')});d.addEventListener('dragleave',()=>d.classList.remove('over'));d.addEventListener('drop',e=>{e.preventDefault();d.classList.remove('over');addFiles([...e.dataTransfer.files],k,m)})});
+[['#inspoCam','inspo',4],['#inspoFile','inspo',4],['#thumbCam','thumb',2],['#thumbFile','thumb',2]].forEach(([id,k,m])=>$(id).addEventListener('change',e=>{addFiles([...e.target.files],k,m);e.target.value=''}));
+[['#drop1','inspo',4],['#drop2','thumb',2]].forEach(([id,k,m])=>{const d=$(id);d.addEventListener('dragover',e=>{e.preventDefault();d.classList.add('over')});d.addEventListener('dragleave',()=>d.classList.remove('over'));d.addEventListener('drop',e=>{e.preventDefault();d.classList.remove('over');addFiles([...e.dataTransfer.files],k,m)})});
 const minD=new Date();minD.setDate(minD.getDate()+7);$('#fDate').min=minD.toISOString().slice(0,10);
 function go(n){$$('[data-step]').forEach(s=>s.hidden=+s.dataset.step!==n);$('#doneBox').hidden=true;$$('#stepnav li').forEach((li,i)=>{li.classList.toggle('on',i+1===n);li.classList.toggle('done',i+1<n)});if(n===4)buildCard()}
 function check(n){
   if(n===1){const m=[!o.inspo.length&&'at least one inspo photo',!$('#fDesign').value.trim()&&'a short description of the design you want'].filter(Boolean);if(m.length){$('#err1').textContent='Please add '+m.join(' and ')+'.';return false}$('#err1').textContent=''}
-  if(n===2){const m=[!o.side&&'which thumb',!o.coin&&'which coin',!o.thumb.length&&'a thumb photo'].filter(Boolean);if(m.length){$('#err2').textContent='Please choose '+m.join(', ')+'.';return false}}
+  if(n===2){const m=[!o.side&&'which hands',!o.coin&&'which coin',!o.thumb.length&&'a photo of your fingers with the coin',o.side==='Both hands'&&o.thumb.length===1&&'a photo of your other hand'].filter(Boolean);if(m.length){$('#err2').textContent='Still needed: '+m.join(', ')+'.';return false}}
   if(n===3){const em=$('#fEmail').value.trim();const m=[!o.shape&&'a shape',!o.length&&'a length',!$('#fName').value.trim()&&'your name',(!em||!$('#fEmail').checkValidity())&&'a valid email',(!$('#fDate').value||$('#fDate').value<$('#fDate').min)&&'a date at least 1 week away'].filter(Boolean);
     if(m.length){$('#err3').textContent='Please add '+m.join(', ')+'.';return false}$('#err3').textContent=''}
   return true}
@@ -791,9 +796,9 @@ async function buildCard(){const W=1080,H=1500,c=document.createElement('canvas'
   const logo=await loadI($('.logo img').src);if(logo){g.save();g.beginPath();g.arc(120,130,64,0,7);g.clip();g.drawImage(logo,56,66,128,128);g.restore()}
   g.fillStyle='#CC4D82';g.font='76px "Caveat Brush", cursive';g.fillText('new order',220,140);g.font='28px "Courier Prime", monospace';g.fillText('FOKING GOOD NAILS',224,180);
   const ins=(await Promise.all(o.inspo.map(loadI))).filter(Boolean),th=(await Promise.all(o.thumb.map(loadI))).filter(Boolean);
-  g.fillStyle='#3A1F28';g.font='700 26px "Courier Prime", monospace';g.fillText('INSPO',60,262);g.fillText((o.side+' THUMB + '+o.coin+' COIN').toUpperCase(),600,262);
+  g.fillStyle='#3A1F28';g.font='700 26px "Courier Prime", monospace';g.fillText('INSPO',60,262);g.fillText((o.side+' + '+o.coin+' COIN').toUpperCase(),600,262);
   const iy=280,ih=520;if(ins.length===1)cover(g,ins[0],60,iy,500,ih,18);else ins.forEach((im,i)=>{const w=245,h=ins.length>2?255:ih;cover(g,im,60+(i%2)*(w+10),iy+Math.floor(i/2)*(h+10),w,h,14)});
-  if(th[0])cover(g,th[0],600,iy,420,ih,18);
+  if(th.length===1)cover(g,th[0],600,iy,420,ih,18);else th.forEach((im,i)=>cover(g,im,600,iy+i*265,420,255,16));
   const d={name:$('#fName').value.trim(),ig:$('#fIg').value.trim(),email:$('#fEmail').value.trim(),date:$('#fDate').value,notes:$('#fNotes').value.trim()};
   const rows=[['Design',$('#fDesign').value.trim()],['Shape',o.shape],['Length',o.length],['Extras',o.extras.join(', ')||'None'],['Need it by',d.date],['Name',d.name],['Instagram',d.ig||'-'],['Email',d.email]];
   let y=870;rows.forEach(([k,v])=>{g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText(k,60,y);g.fillStyle='#3A1F28';g.font='700 30px "DM Sans", sans-serif';g.fillText(String(v).slice(0,46),320,y);
@@ -807,7 +812,7 @@ $('#sendBtn').onclick=async e=>{const btn=$('#sendBtn'),x=e.clientX,y=e.clientY;
   btn.disabled=true;btn.textContent='Sending...';
   try{const fd=new FormData();fd.append('_subject','New nail order from '+$('#fName').value.trim());fd.append('_captcha','false');fd.append('_template','table');
     fd.append('Design',$('#fDesign').value.trim());fd.append('Name',$('#fName').value.trim());fd.append('Instagram',$('#fIg').value.trim());fd.append('email',$('#fEmail').value.trim());fd.append('Need it by',$('#fDate').value);
-    fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Thumb',o.side+' thumb, '+o.coin+' coin');fd.append('Notes',$('#fNotes').value.trim()||'-');fd.append('Inspo photos',o.inspo.length+' photo(s), shown on the attached order card');
+    fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Sizing',o.side+', '+o.coin+' coin, '+o.thumb.length+' photo(s)');fd.append('Notes',$('#fNotes').value.trim()||'-');fd.append('Inspo photos',o.inspo.length+' photo(s), shown on the attached order card');
     const post=body=>fetch('https://formsubmit.co/ajax/'+encodeURIComponent(ORDER_EMAIL),{method:'POST',body,headers:{Accept:'application/json'}}).then(r=>r.json().catch(()=>({})).then(j=>r.ok&&String(j.success)!=='false'));
     const withCard=new FormData();for(const [k,v] of fd)withCard.append(k,v);withCard.append('attachment',await (await fetch(cardURL)).blob(),'order-card.jpg');
     let ok=false,photos=true;try{ok=await post(withCard)}catch(e){}
