@@ -8,7 +8,7 @@
    Look borrowed from her own price-list post: raspberry brush lettering, typewriter text, wavy hand-drawn lines on blush paper. */
 :root{
   --paper:#FBEEF2; --paper-2:#F6DDE5; --white:#FFFFFF; --ink:#3A1F28; --muted:#86606C;
-  --rasp:#B8235A; --rasp-2:#8E1A45; --blush:#F3B6C8; --gold:#C9A24A; --line:rgba(142,26,69,.16);
+  --rasp:#CC4D82; --rasp-2:#A6336A; --blush:#F3B6C8; --gold:#C9A24A; --line:rgba(166,51,106,.16);
   --brush:"Caveat Brush","Marker Felt","Comic Sans MS",cursive;
   --type:"Courier Prime","Courier New",ui-monospace,monospace;
   --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -144,12 +144,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .mgroup h4 small{font-family:var(--type);font-size:12px;color:var(--muted);letter-spacing:.04em}
 .tiles{display:grid;gap:8px}
 .tile{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;text-align:left;padding:10px 14px 10px 12px;border-radius:16px;border:1.5px solid transparent;background:var(--paper);transition:transform .25s cubic-bezier(.2,.9,.2,1.3),border-color .2s,background .2s,box-shadow .25s}
-.tile:hover{transform:translateY(-2px);background:#fff;box-shadow:0 8px 20px -12px rgba(142,26,69,.45)}
-.tile[aria-pressed="true"]{border-color:var(--rasp);background:#fff;box-shadow:0 10px 24px -14px rgba(142,26,69,.6)}
+.tile:hover{transform:translateY(-2px);background:#fff;box-shadow:0 8px 20px -12px rgba(166,51,106,.45)}
+.tile[aria-pressed="true"]{border-color:var(--rasp);background:#fff;box-shadow:0 10px 24px -14px rgba(166,51,106,.6)}
 .tile .nm{display:block;font-weight:700;font-size:16px;line-height:1.2}
 .tile small{display:block;font-family:var(--type);font-size:12.5px;color:var(--muted);line-height:1.35;margin-top:2px}
 .tile .pr{font-family:var(--brush);color:var(--rasp);font-size:30px;white-space:nowrap;line-height:1}
-.nl{width:30px;height:46px;flex-shrink:0;position:relative;border-radius:50% 50% 42% 42%/62% 62% 30% 30%;background:var(--nb,#E8B4A2);box-shadow:inset -3px -4px 0 rgba(0,0,0,.06),0 2px 0 rgba(142,26,69,.12);overflow:hidden;transition:transform .35s cubic-bezier(.2,.9,.2,1.5)}
+.nl{width:30px;height:46px;flex-shrink:0;position:relative;border-radius:50% 50% 42% 42%/62% 62% 30% 30%;background:var(--nb,#E8B4A2);box-shadow:inset -3px -4px 0 rgba(0,0,0,.06),0 2px 0 rgba(166,51,106,.12);overflow:hidden;transition:transform .35s cubic-bezier(.2,.9,.2,1.5)}
 .nl::after{content:"";position:absolute;left:22%;top:14%;width:20%;height:46%;border-radius:999px;background:rgba(255,255,255,.55)}
 .tile:hover .nl,.tile[aria-pressed="true"] .nl{transform:rotate(-10deg) scale(1.08)}
 .nl.plain{--nb:#E84A8A}
@@ -185,8 +185,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @keyframes stamp{from{transform:scale(1.5) rotate(-12deg)}}
 
 /* ambassador banner, styled after her Instagram post */
-.amb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:center;gap:26px;margin-top:30px;padding:26px clamp(18px,3vw,34px);border-radius:24px;text-decoration:none;color:var(--ink);background:repeating-linear-gradient(90deg,#F6DDE5 0 14px,#FBEEF2 14px 28px);border:1.5px solid var(--line);position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.2,.9,.2,1.3),box-shadow .3s}
-.amb:hover{transform:translateY(-3px);box-shadow:0 16px 34px -18px rgba(142,26,69,.55)}
+.amb{margin-top:22px!important;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:center;gap:26px;padding:22px clamp(18px,3vw,34px);border-radius:24px;text-decoration:none;color:var(--ink);background:repeating-linear-gradient(90deg,#F6DDE5 0 14px,#FBEEF2 14px 28px);border:1.5px solid var(--line);position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.2,.9,.2,1.3),box-shadow .3s}
+.amb:hover{transform:translateY(-3px);box-shadow:0 16px 34px -18px rgba(166,51,106,.55)}
 .amb-txt{background:#FBEEF2;border-radius:18px;padding:18px 20px;display:grid;justify-items:start;gap:4px}
 .amb-k{font-family:var(--brush);color:#C2577F;font-size:34px;line-height:.9}
 .amb b{font-family:Georgia,"Times New Roman",serif;font-weight:400;color:#C2577F;font-size:clamp(30px,4vw,46px);letter-spacing:-.01em;line-height:1}
@@ -313,8 +313,8 @@ textarea.inp{min-height:84px;resize:vertical}
     <svg class="bottle" viewBox="0 0 80 120" aria-hidden="true">
       <defs><clipPath id="glass"><path d="M14 52q0-10 10-10h32q10 0 10 10v52q0 12-12 12H26q-12 0-12-12z"/></clipPath></defs>
       <rect x="28" y="2" width="24" height="34" rx="4" fill="#3A1F28"/><rect x="24" y="34" width="32" height="10" rx="3" fill="#C9A24A"/>
-      <path d="M14 52q0-10 10-10h32q10 0 10 10v52q0 12-12 12H26q-12 0-12-12z" fill="#FFFFFF" stroke="#B8235A" stroke-width="2.5"/>
-      <g clip-path="url(#glass)"><rect id="fill" x="0" y="118" width="80" height="80" fill="#F3B6C8"/><rect id="fill2" x="0" y="122" width="80" height="80" fill="#B8235A" opacity=".5"/></g>
+      <path d="M14 52q0-10 10-10h32q10 0 10 10v52q0 12-12 12H26q-12 0-12-12z" fill="#FFFFFF" stroke="#CC4D82" stroke-width="2.5"/>
+      <g clip-path="url(#glass)"><rect id="fill" x="0" y="118" width="80" height="80" fill="#F3B6C8"/><rect id="fill2" x="0" y="122" width="80" height="80" fill="#CC4D82" opacity=".5"/></g>
       <path d="M22 60v34" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>
     </svg>
     <h1>foking good nails</h1>
@@ -335,12 +335,18 @@ textarea.inp{min-height:84px;resize:vertical}
       <a href="#contact" data-v="contact"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>Contact</a>
     </nav>
   </div>
-  <svg class="wavy" viewBox="0 0 1200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q25 0 50 6 T100 6 T150 6 T200 6 T250 6 T300 6 T350 6 T400 6 T450 6 T500 6 T550 6 T600 6 T650 6 T700 6 T750 6 T800 6 T850 6 T900 6 T950 6 T1000 6 T1050 6 T1100 6 T1150 6 T1200 6" fill="none" stroke="#B8235A" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+  <svg class="wavy" viewBox="0 0 1200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q25 0 50 6 T100 6 T150 6 T200 6 T250 6 T300 6 T350 6 T400 6 T450 6 T500 6 T550 6 T600 6 T650 6 T700 6 T750 6 T800 6 T850 6 T900 6 T950 6 T1000 6 T1050 6 T1100 6 T1150 6 T1200 6" fill="none" stroke="#CC4D82" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
 </header>
 
 <main class="wrap">
   <!-- HOME -->
   <section class="view" data-view="home">
+    <a class="amb" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">
+      <div class="amb-txt"><span class="amb-k">Join the</span><b>AMBASSADOR</b><span class="amb-k">team</span>
+        <p>Got what it takes to promote my business? Post social media content, share feedback and show your creativity.</p>
+        <span class="btn btn-fill">Apply now in my DMs</span></div>
+      <div class="amb-ph"><img src='PH_ambassador' alt="Foking Good Nails owner showing off her nails"><span>FGN<small>ambassador</small></span></div>
+    </a>
     <div class="home">
       <div>
         <div class="kick">press-on nails · Vaughan, ON</div>
@@ -359,12 +365,6 @@ textarea.inp{min-height:84px;resize:vertical}
       </div>
     </div>
     <div class="marq" aria-label="Recent sets"><div class="tr" id="marq"></div></div>
-    <a class="amb" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">
-      <div class="amb-txt"><span class="amb-k">Join the</span><b>AMBASSADOR</b><span class="amb-k">team</span>
-        <p>Got what it takes to promote my business? Post social media content, share feedback and show your creativity.</p>
-        <span class="btn btn-fill">Apply now in my DMs</span></div>
-      <div class="amb-ph"><img src='PH_ambassador' alt="Foking Good Nails owner showing off her nails"><span>FGN<small>ambassador</small></span></div>
-    </a>
   </section>
 
   <!-- DESIGN -->
@@ -433,6 +433,7 @@ textarea.inp{min-height:84px;resize:vertical}
             <input type="file" id="inspoFile" accept="image/*" multiple hidden>
           </div>
           <div class="thumbs" id="inspoList"></div>
+          <label class="field" style="margin-top:14px"><b>What design do you want?</b><input class="inp" id="fDesign" maxlength="200" placeholder="e.g. pink french tips with white bows, like the 2nd photo"></label>
           <p class="err" id="err1"></p>
           <div class="navb"><span></span><button class="btn btn-fill" data-next="2">Next</button></div>
         </div>
@@ -440,7 +441,7 @@ textarea.inp{min-height:84px;resize:vertical}
           <h3>size with a coin</h3>
           <p class="lead">A coin next to your thumb tells me exactly how big to make your nails.</p>
           <div class="coin">
-            <svg viewBox="0 0 150 120" aria-hidden="true"><rect x="1" y="1" width="148" height="118" rx="12" fill="#FFF" stroke="#F3B6C8" stroke-width="2"/><path d="M30 118V58c0-14 8-24 20-24s20 10 20 24v60" fill="#F2CDBB" stroke="#C99381" stroke-width="2"/><rect x="37" y="40" width="26" height="30" rx="12" fill="#FBE3EA" stroke="#B8235A" stroke-width="2"/><circle cx="108" cy="64" r="22" fill="#E3C778" stroke="#A9822F" stroke-width="3"/><text x="108" y="69" text-anchor="middle" font-family="Courier Prime, monospace" font-size="13" font-weight="700" fill="#6B5114" id="coinTxt">$2</text></svg>
+            <svg viewBox="0 0 150 120" aria-hidden="true"><rect x="1" y="1" width="148" height="118" rx="12" fill="#FFF" stroke="#F3B6C8" stroke-width="2"/><path d="M30 118V58c0-14 8-24 20-24s20 10 20 24v60" fill="#F2CDBB" stroke="#C99381" stroke-width="2"/><rect x="37" y="40" width="26" height="30" rx="12" fill="#FBE3EA" stroke="#CC4D82" stroke-width="2"/><circle cx="108" cy="64" r="22" fill="#E3C778" stroke="#A9822F" stroke-width="3"/><text x="108" y="69" text-anchor="middle" font-family="Courier Prime, monospace" font-size="13" font-weight="700" fill="#6B5114" id="coinTxt">$2</text></svg>
             <ol><li>Hand flat on a table</li><li>Coin right beside your thumbnail</li><li>Photo from straight above, good light</li></ol>
           </div>
           <div class="field"><b>Which thumb?</b><div class="row" id="side" role="group" aria-label="Which thumb"><button class="pill" data-v="Left" aria-pressed="false">Left</button><button class="pill" data-v="Right" aria-pressed="false">Right</button></div></div>
@@ -488,7 +489,8 @@ textarea.inp{min-height:84px;resize:vertical}
         <div class="done" id="doneBox" hidden>
           <h3>got it!</h3>
           <p class="lead" id="doneMsg"></p>
-          <button class="btn btn-line" id="again">Start another order</button>
+          <div class="row" style="gap:10px;flex-wrap:wrap"><a class="btn btn-fill" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">DM me now</a>
+          <button class="btn btn-line" id="again">Start another order</button></div>
         </div>
       </div>
     </div>
@@ -542,9 +544,9 @@ const ORDER_EMAIL='foking.good.nails@gmail.com';
 /* ---------- tiny bow confetti ---------- */
 const bc=$('#bows'),bg=bc.getContext('2d');let bits=[];
 function sizeB(){bc.width=innerWidth*devicePixelRatio;bc.height=innerHeight*devicePixelRatio}sizeB();addEventListener('resize',sizeB);
-function bowBurst(x,y,n){if(reduce)return;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=3+Math.random()*6;bits.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,r:Math.random()*6,vr:(Math.random()-.5)*.3,s:.7+Math.random()*.7,c:['#B8235A','#F3B6C8','#C9A24A','#FFFFFF'][i%4],l:1})}if(bits.length===n)requestAnimationFrame(drawB)}
+function bowBurst(x,y,n){if(reduce)return;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=3+Math.random()*6;bits.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,r:Math.random()*6,vr:(Math.random()-.5)*.3,s:.7+Math.random()*.7,c:['#CC4D82','#F3B6C8','#C9A24A','#FFFFFF'][i%4],l:1})}if(bits.length===n)requestAnimationFrame(drawB)}
 function drawB(){const d=devicePixelRatio;bg.clearRect(0,0,bc.width,bc.height);bits.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.vy+=.25;b.vx*=.98;b.r+=b.vr;b.l-=.012;
-  bg.save();bg.translate(b.x*d,b.y*d);bg.rotate(b.r);bg.scale(b.s*d,b.s*d);bg.globalAlpha=Math.max(0,b.l);bg.fillStyle=b.c;bg.strokeStyle='rgba(142,26,69,.4)';
+  bg.save();bg.translate(b.x*d,b.y*d);bg.rotate(b.r);bg.scale(b.s*d,b.s*d);bg.globalAlpha=Math.max(0,b.l);bg.fillStyle=b.c;bg.strokeStyle='rgba(166,51,106,.4)';
   bg.beginPath();bg.ellipse(-6,0,6,4,-.4,0,7);bg.ellipse(6,0,6,4,.4,0,7);bg.fill();bg.beginPath();bg.arc(0,0,2.2,0,7);bg.fill();bg.restore()});
   bits=bits.filter(b=>b.l>0&&b.y<innerHeight+40);if(bits.length)requestAnimationFrame(drawB);else bg.clearRect(0,0,bc.width,bc.height)}
 
@@ -619,7 +621,7 @@ for(let i=1;i<=10;i++){const b=document.createElement('button');b.textContent=i=
 
 /* ---------- 3D studio ---------- */
 const STYLES=[{id:'solid',n:'Solid'},{id:'french',n:'French'},{id:'polka',n:'Polka dots'},{id:'ombre',n:'Ombre'},{id:'stripes',n:'Stripes'},{id:'hearts',n:'Hearts'}];
-const COLS=[['Nude','#E8B4A2'],['Baby pink','#F7C6D3'],['Hot pink','#E84A8A'],['Raspberry','#B8235A'],['Cherry red','#C8102E'],['Milky white','#F7F2EE'],['Lilac','#C8B6E8'],['Baby blue','#9FCBEB'],['Lemon','#F5DB5C'],['Mint','#A8DFC4'],['Black','#1E1A1C'],['Gold','#D4AF5A']];
+const COLS=[['Nude','#E8B4A2'],['Baby pink','#F7C6D3'],['Hot pink','#E84A8A'],['Raspberry','#CC4D82'],['Cherry red','#C8102E'],['Milky white','#F7F2EE'],['Lilac','#C8B6E8'],['Baby blue','#9FCBEB'],['Lemon','#F5DB5C'],['Mint','#A8DFC4'],['Black','#1E1A1C'],['Gold','#D4AF5A']];
 const FIN=['Glossy','Matte','Chrome','Shimmer'];
 const SHAPES=['Almond','Square','Coffin','Stiletto','Oval'];
 const LEN3={Short:1.15,Medium:1.45,Long:1.8,'Extra long':2.15};
@@ -740,7 +742,7 @@ $('#spin').onclick=()=>{spin=!spin;if(controls)controls.autoRotate=spin;$('#spin
 $('#useDesign').onclick=async e=>{
   if(hasGL){renderer.render(scene,camera);await addInspoSrc(renderer.domElement.toDataURL('image/jpeg',.9))}
   const desc=`${STYLES[d3.style].n}, ${d3.baseN} base, ${d3.accN} accent, ${FIN[d3.fin]}, ${SHAPES[d3.shape]}, ${d3.len}${d3.charms.length?', charms: '+d3.charms.join(' + '):''}`;
-  $('#fNotes').value=($('#fNotes').value?$('#fNotes').value+'\n':'')+'My 3D design: '+desc;
+  $('#fDesign').value='My 3D design: '+desc;
   selectPill('#oShape',SHAPES[d3.shape],'shape');selectPill('#oLen',d3.len,'length');
   bowBurst(e.clientX,e.clientY,18);nav('order');go(1);toast('Your 3D design was added as inspo')};
 
@@ -764,7 +766,7 @@ function renderT(key){const box=key==='inspo'?$('#inspoList'):$('#thumbList');bo
 const minD=new Date();minD.setDate(minD.getDate()+7);$('#fDate').min=minD.toISOString().slice(0,10);
 function go(n){$$('[data-step]').forEach(s=>s.hidden=+s.dataset.step!==n);$('#doneBox').hidden=true;$$('#stepnav li').forEach((li,i)=>{li.classList.toggle('on',i+1===n);li.classList.toggle('done',i+1<n)});if(n===4)buildCard()}
 function check(n){
-  if(n===1&&!o.inspo.length){$('#err1').textContent='Add at least one inspo photo.';return false}
+  if(n===1){const m=[!o.inspo.length&&'at least one inspo photo',!$('#fDesign').value.trim()&&'a short description of the design you want'].filter(Boolean);if(m.length){$('#err1').textContent='Please add '+m.join(' and ')+'.';return false}$('#err1').textContent=''}
   if(n===2){const m=[!o.side&&'which thumb',!o.coin&&'which coin',!o.thumb.length&&'a thumb photo'].filter(Boolean);if(m.length){$('#err2').textContent='Please choose '+m.join(', ')+'.';return false}}
   if(n===3){const em=$('#fEmail').value.trim();const m=[!o.shape&&'a shape',!o.length&&'a length',!$('#fName').value.trim()&&'your name',(!em||!$('#fEmail').checkValidity())&&'a valid email',(!$('#fDate').value||$('#fDate').value<$('#fDate').min)&&'a date at least 1 week away'].filter(Boolean);
     if(m.length){$('#err3').textContent='Please add '+m.join(', ')+'.';return false}$('#err3').textContent=''}
@@ -775,32 +777,32 @@ function loadI(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i)
 function cover(g,im,x,y,w,h,r){g.save();g.beginPath();g.roundRect?g.roundRect(x,y,w,h,r):g.rect(x,y,w,h);g.clip();const k=Math.max(w/im.width,h/im.height);g.drawImage(im,x+(w-im.width*k)/2,y+(h-im.height*k)/2,im.width*k,im.height*k);g.restore()}
 let cardURL='';
 async function buildCard(){const W=1080,H=1500,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');try{await document.fonts.ready}catch(e){}
-  g.fillStyle='#FBEEF2';g.fillRect(0,0,W,H);g.strokeStyle='#B8235A';g.lineWidth=3;g.beginPath();for(let x=30;x<=W-30;x+=4)g.lineTo(x,30+Math.sin(x/18)*5);g.stroke();
+  g.fillStyle='#FBEEF2';g.fillRect(0,0,W,H);g.strokeStyle='#CC4D82';g.lineWidth=3;g.beginPath();for(let x=30;x<=W-30;x+=4)g.lineTo(x,30+Math.sin(x/18)*5);g.stroke();
   const logo=await loadI($('.logo img').src);if(logo){g.save();g.beginPath();g.arc(120,130,64,0,7);g.clip();g.drawImage(logo,56,66,128,128);g.restore()}
-  g.fillStyle='#B8235A';g.font='76px "Caveat Brush", cursive';g.fillText('new order',220,140);g.font='28px "Courier Prime", monospace';g.fillText('FOKING GOOD NAILS',224,180);
+  g.fillStyle='#CC4D82';g.font='76px "Caveat Brush", cursive';g.fillText('new order',220,140);g.font='28px "Courier Prime", monospace';g.fillText('FOKING GOOD NAILS',224,180);
   const ins=(await Promise.all(o.inspo.map(loadI))).filter(Boolean),th=(await Promise.all(o.thumb.map(loadI))).filter(Boolean);
   g.fillStyle='#3A1F28';g.font='700 26px "Courier Prime", monospace';g.fillText('INSPO',60,262);g.fillText((o.side+' THUMB + '+o.coin+' COIN').toUpperCase(),600,262);
   const iy=280,ih=520;if(ins.length===1)cover(g,ins[0],60,iy,500,ih,18);else ins.forEach((im,i)=>{const w=245,h=ins.length>2?255:ih;cover(g,im,60+(i%2)*(w+10),iy+Math.floor(i/2)*(h+10),w,h,14)});
   if(th[0])cover(g,th[0],600,iy,420,ih,18);
   const d={name:$('#fName').value.trim(),ig:$('#fIg').value.trim(),email:$('#fEmail').value.trim(),date:$('#fDate').value,notes:$('#fNotes').value.trim()};
-  const rows=[['Shape',o.shape],['Length',o.length],['Extras',o.extras.join(', ')||'None'],['Need it by',d.date],['Name',d.name],['Instagram',d.ig||'-'],['Email',d.email]];
-  let y=890;rows.forEach(([k,v])=>{g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText(k,60,y);g.fillStyle='#3A1F28';g.font='700 30px "DM Sans", sans-serif';g.fillText(String(v).slice(0,46),320,y);
-    g.strokeStyle='rgba(184,35,90,.35)';g.lineWidth=2;g.beginPath();for(let x=60;x<=1020;x+=4)g.lineTo(x,y+18+Math.sin(x/10)*1.5);g.stroke();y+=62});
+  const rows=[['Design',$('#fDesign').value.trim()],['Shape',o.shape],['Length',o.length],['Extras',o.extras.join(', ')||'None'],['Need it by',d.date],['Name',d.name],['Instagram',d.ig||'-'],['Email',d.email]];
+  let y=870;rows.forEach(([k,v])=>{g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText(k,60,y);g.fillStyle='#3A1F28';g.font='700 30px "DM Sans", sans-serif';g.fillText(String(v).slice(0,46),320,y);
+    g.strokeStyle='rgba(204,77,130,.35)';g.lineWidth=2;g.beginPath();for(let x=60;x<=1020;x+=4)g.lineTo(x,y+18+Math.sin(x/10)*1.5);g.stroke();y+=56});
   if(d.notes){g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText('Notes',60,y);g.fillStyle='#3A1F28';g.font='28px "DM Sans", sans-serif';let line='',ly=y;for(const w of d.notes.replace(/\n/g,' ').split(/\s+/)){const t=line?line+' '+w:w;if(g.measureText(t).width>690){g.fillText(line,320,ly);ly+=38;line=w;if(ly>y+76)break}else line=t}if(line&&ly<=y+76)g.fillText(line,320,ly)}
-  g.fillStyle='#B8235A';g.font='26px "Courier Prime", monospace';g.textAlign='center';g.fillText('@foking.good.nails · '+new Date().toLocaleDateString(),W/2,H-40);g.textAlign='left';
+  g.fillStyle='#CC4D82';g.font='26px "Courier Prime", monospace';g.textAlign='center';g.fillText('@foking.good.nails · '+new Date().toLocaleDateString(),W/2,H-40);g.textAlign='left';
   cardURL=c.toDataURL('image/jpeg',.88);$('#cardImg').src=cardURL}
 $('#sendBtn').onclick=async e=>{const btn=$('#sendBtn'),x=e.clientX,y=e.clientY;$('#err4').textContent='';
   if(!ORDER_EMAIL){finish('This is a preview, so nothing was sent. On the live site your order card and photos go straight to my email.',x,y);return}
   btn.disabled=true;btn.textContent='Sending...';
   try{const fd=new FormData();fd.append('_subject','New nail order from '+$('#fName').value.trim());fd.append('_captcha','false');fd.append('_template','table');
-    fd.append('Name',$('#fName').value.trim());fd.append('Instagram',$('#fIg').value.trim());fd.append('email',$('#fEmail').value.trim());fd.append('Need it by',$('#fDate').value);
-    fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Thumb',o.side+' thumb, '+o.coin+' coin');fd.append('Notes',$('#fNotes').value.trim()||'-');
+    fd.append('Design',$('#fDesign').value.trim());fd.append('Name',$('#fName').value.trim());fd.append('Instagram',$('#fIg').value.trim());fd.append('email',$('#fEmail').value.trim());fd.append('Need it by',$('#fDate').value);
+    fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Thumb',o.side+' thumb, '+o.coin+' coin');fd.append('Notes',$('#fNotes').value.trim()||'-');fd.append('Inspo photos',o.inspo.length+' photo(s), shown on the attached order card');
     fd.append('attachment',await (await fetch(cardURL)).blob(),'order-card.jpg');
     const r=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(ORDER_EMAIL),{method:'POST',body:fd,headers:{Accept:'application/json'}});if(!r.ok)throw 0;
-    finish("Thank you! I'll message you soon to confirm your price. Then you can e-Transfer it to foking.good.nails@gmail.com.",x,y)}
+    finish("Your order was sent! Now DM me @foking.good.nails to let me know you ordered, and I'll give you your final price. Then you can e-Transfer it to foking.good.nails@gmail.com.",x,y)}
   catch(err){$('#err4').textContent="Your order didn't send. Try again, or DM me the order card.";btn.disabled=false;btn.textContent='Send my order'}};
 function finish(msg,x,y){$$('[data-step]').forEach(s=>s.hidden=true);$('#doneMsg').textContent=msg;$('#doneBox').hidden=false;$$('#stepnav li').forEach(li=>{li.classList.remove('on');li.classList.add('done')});bowBurst(x||innerWidth/2,y||innerHeight/2,34)}
-$('#again').onclick=()=>{Object.assign(o,{inspo:[],thumb:[],side:'',coin:'',shape:'',length:'',extras:[]});renderT('inspo');renderT('thumb');$$('.opanel .pill').forEach(x=>x.setAttribute('aria-pressed','false'));['#fName','#fIg','#fEmail','#fDate','#fNotes'].forEach(id=>$(id).value='');const b=$('#sendBtn');b.disabled=false;b.textContent='Send my order';go(1)};
+$('#again').onclick=()=>{Object.assign(o,{inspo:[],thumb:[],side:'',coin:'',shape:'',length:'',extras:[]});renderT('inspo');renderT('thumb');$$('.opanel .pill').forEach(x=>x.setAttribute('aria-pressed','false'));['#fName','#fIg','#fEmail','#fDate','#fNotes','#fDesign'].forEach(id=>$(id).value='');const b=$('#sendBtn');b.disabled=false;b.textContent='Send my order';go(1)};
 $('#copyIg').onclick=()=>{(navigator.clipboard?navigator.clipboard.writeText('@foking.good.nails'):Promise.reject()).then(()=>toast('Copied')).catch(()=>toast('@foking.good.nails'))};
 
 go(1);show(location.hash.slice(1)||'home');setTimeout(moveInd,300);
