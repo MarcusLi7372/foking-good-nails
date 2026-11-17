@@ -28,4 +28,3 @@ Live and taking orders. Orders (with the order card, inspo and hand photos attac
 
 ## Still to do
 - Custom domain (Marcus is paying for it), connected in Vercel under Settings > Domains
-- Original high-res logo file
