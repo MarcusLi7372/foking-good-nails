@@ -1,0 +1,788 @@
+<title>Foking Good Nails</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Courier+Prime:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: an app with tabs (Home, Design, Sets, Prices, Order, Contact). Tabs sit in the header on desktop and in a bottom bar on phones.
+   Look borrowed from her own price-list post: raspberry brush lettering, typewriter text, wavy hand-drawn lines on blush paper. */
+:root{
+  --paper:#FBEEF2; --paper-2:#F6DDE5; --white:#FFFFFF; --ink:#3A1F28; --muted:#86606C;
+  --rasp:#B8235A; --rasp-2:#8E1A45; --blush:#F3B6C8; --gold:#C9A24A; --line:rgba(142,26,69,.16);
+  --brush:"Caveat Brush","Marker Felt","Comic Sans MS",cursive;
+  --type:"Courier Prime","Courier New",ui-monospace,monospace;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{margin:0;font-weight:400;line-height:1;text-wrap:balance}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--rasp);outline-offset:2px}
+[hidden]{display:none!important}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brush{font-family:var(--brush);color:var(--rasp)}
+
+/* ---------- loading screen ---------- */
+.loader{position:fixed;inset:0;z-index:100;background:var(--paper);display:grid;place-items:center;padding:24px;cursor:pointer;transition:opacity .6s,visibility .6s}
+.loader.out{opacity:0;visibility:hidden}
+.loader-in{display:grid;justify-items:center;gap:18px;text-align:center}
+.loader .lg{width:150px;height:150px;border-radius:50%;box-shadow:0 0 0 8px var(--white),0 0 0 10px var(--blush);animation:pop .8s cubic-bezier(.2,.9,.2,1.4) both}
+@keyframes pop{from{transform:scale(.4) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+.bottle{width:76px;height:auto}
+.loader h1{font-family:var(--brush);color:var(--rasp);font-size:46px}
+.loader p{margin:0;font-family:var(--type);font-size:14px;color:var(--muted)}
+.loader .pct{font-family:var(--type);font-weight:700;color:var(--rasp-2)}
+.loader.out .lg{transform:scale(1.4);transition:transform .6s}
+
+/* ---------- header + tabs ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(251,238,242,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--paper)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--rasp-2);flex-shrink:0}
+.logo img{width:44px;height:44px;border-radius:50%}
+.logo span{font-family:var(--type);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+.tabs{position:relative;display:flex;gap:2px;background:var(--white);border:1.5px solid var(--line);border-radius:999px;padding:4px}
+.tabs a{position:relative;z-index:1;display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;transition:color .25s}
+.tabs a svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tabs a[aria-current="page"]{color:#fff}
+.tabs .ind{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:0;border-radius:999px;background:var(--rasp);transition:left .35s cubic-bezier(.2,.9,.2,1.15),width .35s cubic-bezier(.2,.9,.2,1.15)}
+.wavy{display:block;width:100%;height:12px}
+
+/* ---------- views ---------- */
+.view{animation:vin .45s cubic-bezier(.2,.8,.2,1) both;padding-bottom:40px}
+@keyframes vin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.vhead{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:26px;margin-bottom:20px}
+.vhead h2{font-family:var(--brush);color:var(--rasp);font-size:clamp(46px,6vw,72px)}
+.vhead p{margin:0;font-family:var(--type);font-size:14px;color:var(--muted);max-width:46ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 20px;font-weight:700;text-decoration:none;border:2px solid var(--rasp);transition:transform .15s,background .15s,color .15s}
+.btn:active{transform:translateY(1px)}
+.btn-fill{background:var(--rasp);color:#fff}
+.btn-fill:hover{background:var(--rasp-2);border-color:var(--rasp-2)}
+.btn-line{background:transparent;color:var(--rasp)}
+.btn-line:hover{background:var(--white)}
+.btn-sm{padding:9px 14px;font-size:14px}
+.pill{border:1.5px solid var(--line);background:var(--white);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:transform .15s}
+.pill:hover{transform:translateY(-1px)}
+.pill[aria-pressed="true"]{background:var(--rasp);border-color:var(--rasp);color:#fff}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* home */
+.home{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;align-items:center;padding-top:22px}
+.home .kick{font-family:var(--type);font-size:14px;color:var(--muted)}
+.home h1{font-family:var(--brush);color:var(--rasp);font-size:clamp(60px,9vw,120px);line-height:.86;margin:10px 0 0}
+.home h1 .ln{display:block}
+.home h1 .ln:nth-child(2){padding-left:.5em}
+.home h1 .ln span{display:inline-block;animation:drop .6s cubic-bezier(.2,.9,.2,1.4) both}
+@keyframes drop{from{opacity:0;transform:translateY(-30px) rotate(-8deg)}to{opacity:1;transform:none}}
+.home p.lead{font-size:18px;max-width:40ch;margin:18px 0 22px}
+.home .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:26px}
+.quick a{background:var(--white);border-radius:16px;padding:12px 14px;text-decoration:none;color:var(--ink);border:1.5px solid var(--line);transition:transform .2s,border-color .2s}
+.quick a:hover{transform:translateY(-3px);border-color:var(--rasp)}
+.quick b{display:block;font-family:var(--brush);color:var(--rasp);font-size:30px;font-weight:400;line-height:1}
+.quick span{font-family:var(--type);font-size:12px;color:var(--muted)}
+.homestage{position:relative;height:clamp(360px,48vw,520px);border-radius:28px;overflow:hidden;background:radial-gradient(110% 100% at 50% 0%,#FCE9EF,#EFC3D0 85%)}
+.homestage .tag{position:absolute;left:16px;bottom:14px;font-family:var(--type);font-size:12px;color:var(--rasp-2);background:rgba(255,255,255,.75);padding:6px 10px;border-radius:999px}
+.homestage .go{position:absolute;right:14px;bottom:12px}
+.marq{overflow:hidden;margin-top:30px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marq .tr{display:flex;gap:12px;width:max-content;animation:mq 40s linear infinite}
+.marq:hover .tr{animation-play-state:paused}
+.marq img{width:130px;height:130px;object-fit:cover;border-radius:14px;cursor:pointer;transition:transform .2s}
+.marq img:hover{transform:scale(1.05) rotate(-2deg)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* design studio */
+.studio{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:20px;align-items:start;padding-top:18px}
+.stage{position:sticky;top:84px;height:min(640px,calc(100vh - 110px));min-height:380px;border-radius:26px;overflow:hidden;background:radial-gradient(110% 100% at 50% 0%,#FCE9EF,#EFC3D0 85%)}
+.stage canvas,.homestage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.stage .hint{position:absolute;left:14px;top:12px;font-family:var(--type);font-size:12px;color:var(--rasp-2)}
+.stage .tools{position:absolute;right:12px;top:10px;display:flex;gap:6px}
+.stage .tools button{font-family:var(--type);font-size:13px;background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:999px;padding:6px 11px;color:var(--rasp-2)}
+.panel{background:var(--white);border-radius:24px;padding:18px;display:grid;gap:16px;border:1.5px solid var(--line)}
+.panel h3{font-family:var(--brush);color:var(--rasp);font-size:40px}
+.grp > b{display:flex;justify-content:space-between;font-family:var(--type);font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:400}
+.grp > b span{color:var(--rasp-2);font-weight:700}
+.sw{display:flex;flex-wrap:wrap;gap:8px}
+.sw button{width:34px;height:34px;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1.5px var(--line);padding:0;transition:transform .15s}
+.sw button:hover{transform:scale(1.12)}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--rasp)}
+.sw label{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px dashed var(--muted);cursor:pointer;font-weight:700;color:var(--muted);position:relative;overflow:hidden}
+.sw input[type=color]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.estbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding-top:14px;flex-wrap:wrap}
+.estbar span{font-family:var(--type);font-size:13px;color:var(--muted)}
+.estbar b{display:block;font-family:var(--brush);font-weight:400;font-size:38px;color:var(--rasp);line-height:1}
+.nogl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;font-family:var(--type);color:var(--muted)}
+
+/* sets */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.grid{columns:4 220px;column-gap:16px}
+.shot{break-inside:avoid;margin-bottom:16px;width:100%;background:var(--white);padding:10px 10px 12px;border-radius:6px;box-shadow:0 10px 24px -14px rgba(58,31,40,.5);transition:transform .25s,opacity .3s;border:0;text-align:left;display:block}
+.shot:nth-child(3n+1){transform:rotate(-1.2deg)}.shot:nth-child(3n+2){transform:rotate(1deg)}
+.shot:hover{transform:rotate(0) translateY(-6px) scale(1.02)}
+.shot img{width:100%;object-fit:cover;border-radius:3px;display:block}
+.shot:nth-child(4n+1) img{aspect-ratio:4/5}.shot:nth-child(4n+2) img{aspect-ratio:1}.shot:nth-child(4n+3) img{aspect-ratio:1}.shot:nth-child(4n) img{aspect-ratio:4/5}
+.shot span{display:block;font-family:var(--brush);font-size:24px;color:var(--rasp-2);margin-top:8px;line-height:1}
+.shot small{font-family:var(--type);font-size:12px;color:var(--muted)}
+.lb{position:fixed;inset:0;z-index:60;background:rgba(58,31,40,.55);display:grid;place-items:center;padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.lb-card{background:var(--white);border-radius:18px;width:min(880px,100%);max-height:calc(100vh - 40px);overflow:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);animation:zin .35s cubic-bezier(.2,.9,.2,1.2)}
+@keyframes zin{from{transform:scale(.92);opacity:0}}
+.lb-card img{width:100%;height:100%;object-fit:cover;display:block;min-height:280px}
+.lb-info{padding:24px;display:flex;flex-direction:column;gap:12px}
+.lb-info h3{font-family:var(--brush);color:var(--rasp);font-size:46px}
+.lb-info p{margin:0;color:var(--muted)}
+.lb-info .type{font-family:var(--type);font-size:14px;color:var(--rasp-2)}
+.lb-x{align-self:flex-end;border:0;background:var(--paper);border-radius:50%;width:36px;height:36px;font-size:20px;line-height:1}
+.lb-nav{display:flex;gap:8px;margin-top:auto}
+
+/* prices: two menus of tiles, a live estimator bar, then the fine print + nail card */
+.menu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.mgroup{background:var(--white);border:1.5px solid var(--line);border-radius:24px;padding:18px 18px 14px}
+.mgroup h4{font-family:var(--brush);color:var(--rasp);font-weight:400;font-size:36px;margin:0 4px 10px;line-height:1;display:flex;justify-content:space-between;align-items:baseline}
+.mgroup h4 small{font-family:var(--type);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.tiles{display:grid;gap:8px}
+.tile{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;text-align:left;padding:10px 14px 10px 12px;border-radius:16px;border:1.5px solid transparent;background:var(--paper);transition:transform .25s cubic-bezier(.2,.9,.2,1.3),border-color .2s,background .2s,box-shadow .25s}
+.tile:hover{transform:translateY(-2px);background:#fff;box-shadow:0 8px 20px -12px rgba(142,26,69,.45)}
+.tile[aria-pressed="true"]{border-color:var(--rasp);background:#fff;box-shadow:0 10px 24px -14px rgba(142,26,69,.6)}
+.tile .nm{display:block;font-weight:700;font-size:16px;line-height:1.2}
+.tile small{display:block;font-family:var(--type);font-size:12.5px;color:var(--muted);line-height:1.35;margin-top:2px}
+.tile .pr{font-family:var(--brush);color:var(--rasp);font-size:30px;white-space:nowrap;line-height:1}
+.nl{width:30px;height:46px;flex-shrink:0;position:relative;border-radius:50% 50% 42% 42%/62% 62% 30% 30%;background:var(--nb,#E8B4A2);box-shadow:inset -3px -4px 0 rgba(0,0,0,.06),0 2px 0 rgba(142,26,69,.12);overflow:hidden;transition:transform .35s cubic-bezier(.2,.9,.2,1.5)}
+.nl::after{content:"";position:absolute;left:22%;top:14%;width:20%;height:46%;border-radius:999px;background:rgba(255,255,255,.55)}
+.tile:hover .nl,.tile[aria-pressed="true"] .nl{transform:rotate(-10deg) scale(1.08)}
+.nl.plain{--nb:#E84A8A}
+.nl.french{background:linear-gradient(to bottom,#fff 0 30%,#E8B4A2 31%)}
+.nl.simple{background:radial-gradient(circle at 50% 30%,#fff 3px,transparent 3.5px),radial-gradient(circle at 30% 58%,#fff 2.5px,transparent 3px),radial-gradient(circle at 68% 70%,#fff 2.5px,transparent 3px),#F7C6D3}
+.nl.design{background:repeating-linear-gradient(135deg,#F7C6D3 0 5px,#fff 5px 8px,#9FCBEB 8px 12px,#fff 12px 15px)}
+.nl.charms{background:radial-gradient(circle at 50% 38%,#fff 5px,#f3e6d6 6px,transparent 6.5px),radial-gradient(circle at 50% 62%,#fff 3.5px,#f3e6d6 4.5px,transparent 5px),linear-gradient(to bottom,#fff 0 22%,#E8B4A2 23%)}
+.nl.custom{background:radial-gradient(circle at 40% 40%,#fff 2px,#F3B6C8 2.5px 5px,transparent 5.5px),radial-gradient(circle at 64% 62%,#fff 2px,#F3B6C8 2.5px 4.5px,transparent 5px),linear-gradient(to bottom,#E89AAE,#C8102E 120%)}
+.estim{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;background:var(--rasp);color:#fff;border-radius:24px;padding:16px 18px 16px 24px;position:relative;overflow:hidden}
+.estim::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12px 12px,rgba(255,255,255,.08) 2px,transparent 2.5px) 0 0/22px 22px;pointer-events:none}
+.estim .lbl{font-family:var(--type);font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.8;display:block}
+.estim .chosen{font-weight:700;font-size:18px;min-width:0}
+.seg{display:flex;flex-wrap:wrap;background:rgba(255,255,255,.14);border-radius:999px;padding:4px;gap:2px}
+.seg button{border:0;background:none;color:#fff;padding:7px 13px;border-radius:999px;font-weight:700;font-size:14px;transition:background .2s,color .2s}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--rasp)}
+.estim .amt{margin-left:auto;display:flex;align-items:baseline;gap:8px}
+.estim .amt b{font-family:var(--brush);font-weight:400;font-size:52px;line-height:.9}
+.btn-white{background:#fff;color:var(--rasp);border-color:#fff}
+.pfoot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;margin-top:20px;align-items:start}
+.fineprint{font-family:var(--type);font-size:14px;line-height:1.6;padding:6px 4px;color:var(--muted)}
+.fineprint b{color:var(--rasp-2)}
+.fineprint p{margin:0 0 10px}
+.card{background:var(--white);border-radius:18px;padding:20px 22px;border:1.5px solid var(--line);display:grid;gap:12px}
+.card h3{font-family:var(--brush);color:var(--rasp);font-size:36px}
+.card p{margin:0;font-size:15px}
+.out{display:flex;align-items:baseline;justify-content:space-between;border-top:1px dashed var(--line);padding-top:12px}
+.out span{font-family:var(--type);font-size:14px;color:var(--muted)}
+.out b{font-family:var(--brush);font-weight:400;font-size:44px;color:var(--rasp)}
+.stamps{display:grid;grid-template-columns:repeat(5,minmax(0,58px));gap:10px;justify-content:start}
+.stamps button{aspect-ratio:1;border-radius:50%;border:2px dashed var(--blush);background:var(--paper);font-family:var(--type);font-size:12px;color:var(--muted);padding:0;display:grid;place-items:center}
+.stamps button.on{border-style:solid;border-color:var(--rasp);background:var(--rasp);color:#fff;animation:stamp .3s cubic-bezier(.2,.9,.2,1.6)}
+.stamps button:nth-child(5).on,.stamps button:nth-child(10).on{background:var(--gold);border-color:var(--gold)}
+@keyframes stamp{from{transform:scale(1.5) rotate(-12deg)}}
+
+/* tab change: a raspberry frosting wipe with her logo */
+.wipe{position:fixed;inset:0;z-index:70;pointer-events:none;background:var(--rasp);transform:translateX(-120%);display:grid;place-items:center}
+.wipe::after{content:"";position:absolute;top:0;bottom:0;right:-20px;width:21px;background:radial-gradient(circle at 0 50%,var(--rasp) 13px,transparent 13.5px) 0 0/21px 28px repeat-y}
+.wipe::before{content:"";position:absolute;top:0;bottom:0;left:-20px;width:21px;background:radial-gradient(circle at 100% 50%,var(--rasp) 13px,transparent 13.5px) 0 0/21px 28px repeat-y}
+.wipe img{width:84px;height:84px;border-radius:50%;box-shadow:0 0 0 6px #fff}
+.wipe.go{animation:wipe .62s cubic-bezier(.7,0,.3,1) both}
+.wipe.go img{animation:wspin .62s cubic-bezier(.7,0,.3,1) both}
+@keyframes wipe{0%{transform:translateX(-120%)}42%,58%{transform:translateX(0)}100%{transform:translateX(120%)}}
+@keyframes wspin{0%{transform:scale(.4) rotate(-90deg)}50%{transform:scale(1) rotate(0)}100%{transform:scale(.4) rotate(90deg)}}
+.rise{animation:rise .6s cubic-bezier(.2,.9,.2,1.15) both}
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+.btn-fill{will-change:transform}
+
+/* order */
+.order{display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px;align-items:start;padding-top:24px}
+.olside{position:sticky;top:96px}
+.olside h2{font-family:var(--brush);color:var(--rasp);font-size:clamp(46px,5.5vw,64px)}
+.olside p{font-size:15px;color:var(--muted)}
+.steps{list-style:none;margin:18px 0 0;padding:0;font-family:var(--type);font-size:15px}
+.steps li{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);color:var(--muted)}
+.steps li span{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px}
+.steps li.on{color:var(--rasp-2);font-weight:700}
+.steps li.on span{background:var(--rasp);border-color:var(--rasp);color:#fff}
+.steps li.done{color:var(--ink)}
+.steps li.done span{background:var(--gold);border-color:var(--gold);color:#fff}
+.opanel{background:var(--white);border-radius:22px;padding:clamp(18px,3.5vw,32px);min-width:0;border:1.5px solid var(--line)}
+.opanel h3{font-family:var(--brush);color:var(--rasp);font-size:clamp(36px,4.5vw,48px)}
+.opanel .lead{margin:6px 0 18px;color:var(--muted)}
+.drop{border:2px dashed var(--blush);border-radius:18px;background:var(--paper);padding:22px;display:grid;gap:12px;justify-items:center;text-align:center}
+.drop.over{border-color:var(--rasp);background:#FFF7FA}
+.drop p{margin:0;font-family:var(--type);font-size:13px;color:var(--muted)}
+.pick{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;margin-top:14px}
+.thumbs figure{margin:0;position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--paper)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs button{position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(58,31,40,.75);color:#fff;line-height:1}
+.field{display:grid;gap:7px;margin-bottom:16px}
+.field > b{font-family:var(--type);font-size:14px;color:var(--rasp-2)}
+.field small{color:var(--muted);font-size:13px}
+.inp{width:100%;border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 13px}
+.inp:focus{border-color:var(--rasp);outline:none;background:var(--white)}
+textarea.inp{min-height:84px;resize:vertical}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.coin{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:center;background:var(--paper);border-radius:16px;padding:14px;margin-bottom:16px}
+.coin svg{width:100%;height:auto}
+.coin ol{margin:0;padding-left:18px;font-size:14px;display:grid;gap:3px}
+.navb{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.err{color:#B3261E;font-weight:700;font-size:14px;margin:10px 0 0}
+.err:empty{display:none}
+.review{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.cardimg{width:100%;border-radius:12px;box-shadow:0 16px 36px -18px rgba(58,31,40,.55)}
+.send{display:grid;gap:10px}
+.note{background:var(--paper);border-radius:14px;padding:12px 14px;font-size:14px}
+.note b{display:block;font-family:var(--type);color:var(--rasp-2)}
+.done{text-align:center;display:grid;gap:10px;justify-items:center;padding:24px 0}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;padding-top:24px}
+.ig{background:var(--paper-2);border-radius:28px;padding:clamp(20px,4vw,36px);display:grid;gap:14px;align-content:start}
+.ig h2{font-family:var(--brush);color:var(--rasp);font-size:clamp(50px,6vw,72px)}
+.ig .handle{font-family:var(--type);font-size:18px;color:var(--rasp-2);font-weight:700}
+.ig p{margin:0}
+.iggrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--white);padding:10px;border-radius:14px;transform:rotate(1.5deg);box-shadow:0 20px 40px -22px rgba(58,31,40,.5)}
+.iggrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;display:block}
+.copy{border:0;background:none;font-family:var(--type);font-size:14px;color:var(--rasp);text-decoration:underline;text-underline-offset:3px;padding:0;justify-self:start}
+.rules{display:grid;gap:12px;align-content:start}
+.rule{background:var(--white);border-radius:18px;padding:18px 20px;border:1.5px solid var(--line)}
+.rule b{font-family:var(--brush);font-weight:400;color:var(--rasp);font-size:28px;display:block;line-height:1;margin-bottom:6px}
+.rule p{margin:0;color:var(--muted);font-size:15px}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160px);background:var(--rasp-2);color:#fff;font-weight:700;padding:12px 18px;border-radius:12px;transition:transform .3s;z-index:70}
+.toast:not(.show){visibility:hidden;transition:transform .3s,visibility 0s .3s}
+.toast.show{transform:translate(-50%,0)}
+.bows{position:fixed;inset:0;pointer-events:none;z-index:80}
+
+@media (max-width:960px){
+  .menu,.pfoot{grid-template-columns:minmax(0,1fr)}
+  .estim{position:sticky;z-index:5;bottom:calc(82px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"n a b" "s s s";align-items:center;gap:8px 12px;padding:10px 10px 10px 16px;border-radius:20px;box-shadow:0 14px 30px -14px rgba(58,31,40,.55)}
+  .estim .lbl{display:none!important}
+  .estim .chosen{grid-area:n;font-size:15px;line-height:1.2}.estim .amt{grid-area:a;margin-left:0}.estim .amt b{font-size:34px}
+  .estim>div:nth-child(2){grid-area:s}.estim .btn{grid-area:b;padding:9px 14px}
+  .seg{flex-wrap:nowrap}.seg button{flex:1;padding:6px 4px;font-size:12.5px;white-space:nowrap}
+
+  .top .tabs{position:fixed;left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));justify-content:space-between;box-shadow:0 14px 30px -12px rgba(58,31,40,.45)}
+  .tabs a{flex-direction:column;gap:2px;font-size:10.5px;padding:7px 4px;flex:1}
+  .wavy{display:none}
+  .top{border-bottom:1.5px solid var(--line);backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--paper)}
+  .top .wrap{justify-content:center}
+  main{padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+  .home,.studio,.prices,.contact,.review{grid-template-columns:1fr}
+  .home{padding-top:12px}
+  .home h1{font-size:clamp(58px,17vw,92px)}
+  .homestage{order:-1;height:300px}
+  .stage{position:relative;top:0;height:min(58vh,440px)}
+  .stage .hint{display:none}
+  .order{grid-template-columns:1fr;gap:16px}
+  .olside{position:static}
+  .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .steps li{flex-direction:column;gap:4px;font-size:11px;text-align:center;border:0;padding:0}
+  .g2,.coin{grid-template-columns:1fr}
+  .coin svg{max-width:180px;justify-self:center}
+  .lb-card{grid-template-columns:1fr}
+  .lb-card img{min-height:0;aspect-ratio:1}
+  .grid{columns:2 150px;column-gap:12px}
+  .quick b{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="loader" id="loader" role="status" aria-label="Loading Foking Good Nails">
+  <div class="loader-in">
+    <img class="lg" src="LOGO_DATA" alt="">
+    <svg class="bottle" viewBox="0 0 80 120" aria-hidden="true">
+      <defs><clipPath id="glass"><path d="M14 52q0-10 10-10h32q10 0 10 10v52q0 12-12 12H26q-12 0-12-12z"/></clipPath></defs>
+      <rect x="28" y="2" width="24" height="34" rx="4" fill="#3A1F28"/><rect x="24" y="34" width="32" height="10" rx="3" fill="#C9A24A"/>
+      <path d="M14 52q0-10 10-10h32q10 0 10 10v52q0 12-12 12H26q-12 0-12-12z" fill="#FFFFFF" stroke="#B8235A" stroke-width="2.5"/>
+      <g clip-path="url(#glass)"><rect id="fill" x="0" y="118" width="80" height="80" fill="#F3B6C8"/><rect id="fill2" x="0" y="122" width="80" height="80" fill="#B8235A" opacity=".5"/></g>
+      <path d="M22 60v34" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+    </svg>
+    <h1>foking good nails</h1>
+    <p><span id="lmsg">mixing your colours</span> · <span class="pct" id="lpct">0%</span></p>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home"><img src="LOGO_DATA" alt=""><span>Foking Good Nails</span></a>
+    <nav class="tabs" id="tabs" aria-label="Sections">
+      <span class="ind" id="ind"></span>
+      <a href="#home" data-v="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+      <a href="#design" data-v="design"><svg viewBox="0 0 24 24"><path d="M12 3c-3 0-4 3-4 7v8a4 4 0 0 0 8 0v-8c0-4-1-7-4-7z"/><path d="M9 9h6"/></svg>Design</a>
+      <a href="#sets" data-v="sets"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>Sets</a>
+      <a href="#prices" data-v="prices"><svg viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Prices</a>
+      <a href="#order" data-v="order"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Order</a>
+      <a href="#contact" data-v="contact"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>Contact</a>
+    </nav>
+  </div>
+  <svg class="wavy" viewBox="0 0 1200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q25 0 50 6 T100 6 T150 6 T200 6 T250 6 T300 6 T350 6 T400 6 T450 6 T500 6 T550 6 T600 6 T650 6 T700 6 T750 6 T800 6 T850 6 T900 6 T950 6 T1000 6 T1050 6 T1100 6 T1150 6 T1200 6" fill="none" stroke="#B8235A" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+</header>
+
+<main class="wrap">
+  <!-- HOME -->
+  <section class="view" data-view="home">
+    <div class="home">
+      <div>
+        <div class="kick">press-on nails · Vaughan, ON</div>
+        <h1 id="hero"><span class="ln">foking</span><span class="ln">good nails</span></h1>
+        <p class="lead">Custom press-ons, hand-painted one set at a time. Design yours in 3D, send me your inspo, and I'll make it.</p>
+        <div class="ctas"><a class="btn btn-fill" href="#design">Design your set</a><a class="btn btn-line" href="#order">Order with your inspo</a></div>
+        <div class="quick" data-stagger>
+          <a href="#prices"><b>from $15</b><span>see the price list</span></a>
+          <a href="#sets"><b>11 sets</b><span>recent work</span></a>
+          <a href="#contact"><b>1 week</b><span>order ahead</span></a>
+        </div>
+      </div>
+      <div class="homestage" id="homeStage">
+        <span class="tag">drag me · her real case</span>
+        <a class="btn btn-fill btn-sm go" href="#design">Open the studio</a>
+      </div>
+    </div>
+    <div class="marq" aria-label="Recent sets"><div class="tr" id="marq"></div></div>
+  </section>
+
+  <!-- DESIGN -->
+  <section class="view" data-view="design" hidden>
+    <div class="studio">
+      <div class="stage" id="studioStage">
+        <div class="hint">drag to spin · scroll or pinch to zoom</div>
+        <div class="tools"><button id="lid">Close lid</button><button id="spin">Spin: on</button></div>
+      </div>
+      <div class="panel" data-stagger>
+        <h3>design your set</h3>
+        <div class="grp"><b>Style <span id="vStyle">French</span></b><div class="row" id="styles" role="group" aria-label="Style"></div></div>
+        <div class="grp"><b>Base colour <span id="vBase">Nude</span></b><div class="sw" id="baseSw" role="group" aria-label="Base colour"></div></div>
+        <div class="grp"><b>Accent colour <span id="vAcc">White</span></b><div class="sw" id="accSw" role="group" aria-label="Accent colour"></div></div>
+        <div class="grp"><b>Finish <span id="vFin">Glossy</span></b><div class="row" id="finishes" role="group" aria-label="Finish"></div></div>
+        <div class="grp"><b>Shape <span id="vShape">Almond</span></b><div class="row" id="shapes" role="group" aria-label="Shape"></div></div>
+        <div class="grp"><b>Length <span id="vLen">Medium</span></b><div class="row" id="lens" role="group" aria-label="Length"></div></div>
+        <div class="grp"><b>Charms <span id="vCh">None</span></b><div class="row" id="charms" role="group" aria-label="Charms"></div></div>
+        <div class="estbar"><div><span>estimate</span><b id="est">$25</b></div><button class="btn btn-fill" id="useDesign">Order this design</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETS -->
+  <section class="view" data-view="sets" hidden>
+    <div class="vhead"><h2>recent sets</h2><p>Tap any set to see it bigger, or use it as your inspo.</p></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter sets"></div>
+    <div class="grid" id="grid" data-stagger></div>
+  </section>
+
+  <!-- PRICES -->
+  <section class="view" data-view="prices" hidden>
+    <div class="vhead"><h2>prices</h2><p>Price depends on the nail design, length and shape. DM for more info.</p></div>
+    <div class="menu">
+      <div class="mgroup"><h4>simple nails <small>quick to make</small></h4><div class="tiles" id="tilesA" data-stagger></div></div>
+      <div class="mgroup"><h4>design <small>hand-painted</small></h4><div class="tiles" id="tilesB" data-stagger></div></div>
+    </div>
+    <div class="estim" aria-live="polite">
+      <div class="chosen"><span class="lbl">your set</span><span id="eName">Plain colour</span></div>
+      <div><span class="lbl" style="margin-bottom:4px">length</span><div class="seg" id="eLen" role="group" aria-label="Length"></div></div>
+      <div class="amt"><span class="lbl">about</span><b id="cOut">$15</b></div>
+      <a class="btn btn-white" href="#order">Order</a>
+    </div>
+    <div class="pfoot" data-stagger>
+      <div class="fineprint"><p><b>Length and shape change the price.</b> Longer sets and fancy shapes take more time and more paint.</p><p>Estimates are a rough guide. I'll confirm your exact price by DM before I start.</p><p>Payment is arranged by DM.</p></div>
+      <div class="card"><h3>the nail card</h3><p>Buy 5 sets and save 10%. Your 10th set is free. Tap a stamp to fill it up.</p><div class="stamps" id="stamps"></div></div>
+    </div>
+  </section>
+
+  <!-- ORDER -->
+  <section class="view" data-view="order" hidden>
+    <div class="order">
+      <div class="olside">
+        <h2>order a set</h2>
+        <p>About 2 minutes. No payment here: I'll DM you to confirm the price first.</p>
+        <ol class="steps" id="stepnav"><li><span>1</span>Inspo</li><li><span>2</span>Size</li><li><span>3</span>Details</li><li><span>4</span>Send</li></ol>
+      </div>
+      <div class="opanel">
+        <div data-step="1">
+          <h3>your inspo</h3>
+          <p class="lead">Add up to 4 photos of nails you love. Screenshots, my sets, or your 3D design all work.</p>
+          <div class="drop" id="drop1">
+            <div class="pick"><label class="btn btn-fill btn-sm" for="inspoCam">Take a photo</label><label class="btn btn-line btn-sm" for="inspoFile">Choose photos</label></div>
+            <p>or drop them here · or pick from <a href="#sets" style="color:var(--rasp)">my sets</a></p>
+            <input type="file" id="inspoCam" accept="image/*" capture="environment" hidden>
+            <input type="file" id="inspoFile" accept="image/*" multiple hidden>
+          </div>
+          <div class="thumbs" id="inspoList"></div>
+          <p class="err" id="err1"></p>
+          <div class="navb"><span></span><button class="btn btn-fill" data-next="2">Next</button></div>
+        </div>
+        <div data-step="2" hidden>
+          <h3>size with a coin</h3>
+          <p class="lead">A coin next to your thumb tells me exactly how big to make your nails.</p>
+          <div class="coin">
+            <svg viewBox="0 0 150 120" aria-hidden="true"><rect x="1" y="1" width="148" height="118" rx="12" fill="#FFF" stroke="#F3B6C8" stroke-width="2"/><path d="M30 118V58c0-14 8-24 20-24s20 10 20 24v60" fill="#F2CDBB" stroke="#C99381" stroke-width="2"/><rect x="37" y="40" width="26" height="30" rx="12" fill="#FBE3EA" stroke="#B8235A" stroke-width="2"/><circle cx="108" cy="64" r="22" fill="#E3C778" stroke="#A9822F" stroke-width="3"/><text x="108" y="69" text-anchor="middle" font-family="Courier Prime, monospace" font-size="13" font-weight="700" fill="#6B5114" id="coinTxt">$2</text></svg>
+            <ol><li>Hand flat on a table</li><li>Coin right beside your thumbnail</li><li>Photo from straight above, good light</li></ol>
+          </div>
+          <div class="field"><b>Which thumb?</b><div class="row" id="side" role="group" aria-label="Which thumb"><button class="pill" data-v="Left" aria-pressed="false">Left</button><button class="pill" data-v="Right" aria-pressed="false">Right</button></div></div>
+          <div class="field"><b>Which coin?</b><div class="row" id="coin" role="group" aria-label="Which coin"><button class="pill" data-v="25¢" aria-pressed="false">25¢</button><button class="pill" data-v="$1" aria-pressed="false">$1</button><button class="pill" data-v="$2" aria-pressed="false">$2</button></div></div>
+          <div class="drop" id="drop2">
+            <div class="pick"><label class="btn btn-fill btn-sm" for="thumbCam">Take thumb photo</label><label class="btn btn-line btn-sm" for="thumbFile">Choose photo</label></div>
+            <input type="file" id="thumbCam" accept="image/*" capture="environment" hidden>
+            <input type="file" id="thumbFile" accept="image/*" hidden>
+          </div>
+          <div class="thumbs" id="thumbList"></div>
+          <p class="err" id="err2"></p>
+          <div class="navb"><button class="btn btn-line" data-back="1">Back</button><button class="btn btn-fill" data-next="3">Next</button></div>
+        </div>
+        <div data-step="3" hidden>
+          <h3>the details</h3>
+          <p class="lead">How you want your set, and how I can reach you.</p>
+          <div class="field"><b>Shape</b><div class="row" id="oShape" role="group" aria-label="Shape"></div></div>
+          <div class="field"><b>Length</b><div class="row" id="oLen" role="group" aria-label="Length"></div></div>
+          <div class="field"><b>Extras</b><small>optional</small><div class="row" id="oExtra" role="group" aria-label="Extras"></div></div>
+          <div class="g2">
+            <label class="field"><b>Your name</b><input class="inp" id="fName" autocomplete="name"></label>
+            <label class="field"><b>Instagram</b><input class="inp" id="fIg" placeholder="@yourname"></label>
+            <label class="field"><b>Email</b><input class="inp" id="fEmail" type="email" autocomplete="email"></label>
+            <label class="field"><b>Need it by</b><input class="inp" id="fDate" type="date"><small>at least 1 week from today</small></label>
+          </div>
+          <label class="field"><b>Anything else?</b><textarea class="inp" id="fNotes" placeholder="Colours, changes to the inspo, an event..."></textarea></label>
+          <p class="err" id="err3"></p>
+          <div class="navb"><button class="btn btn-line" data-back="2">Back</button><button class="btn btn-fill" data-next="4">Review</button></div>
+        </div>
+        <div data-step="4" hidden>
+          <h3>review & send</h3>
+          <p class="lead">Your photos and details go to me as one order card.</p>
+          <div class="review">
+            <img class="cardimg" id="cardImg" alt="Your order card">
+            <div class="send">
+              <button class="btn btn-fill" id="sendBtn">Send my order</button>
+              <a class="btn btn-line" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">DM it to me instead</a>
+              <div class="note"><b>No payment here</b>I'll DM or email you to confirm your price, then you pay me directly.</div>
+              <div class="note"><b>Sending by DM?</b>Press and hold the order card to save it, then send it to @foking.good.nails.</div>
+              <p class="err" id="err4"></p>
+            </div>
+          </div>
+          <div class="navb"><button class="btn btn-line" data-back="3">Back</button><span></span></div>
+        </div>
+        <div class="done" id="doneBox" hidden>
+          <h3>got it!</h3>
+          <p class="lead" id="doneMsg"></p>
+          <button class="btn btn-line" id="again">Start another order</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="view" data-view="contact" hidden>
+    <div class="contact">
+      <div class="ig">
+        <h2>say hi</h2>
+        <div class="handle">@foking.good.nails</div>
+        <p>Questions, the ambassador team, or the nail card: DM me anytime. Supporting <a href="https://www.instagram.com/fokinggoodtreats/" target="_blank" rel="noopener" style="color:var(--rasp)">@fokinggoodtreats</a> too.</p>
+        <div class="row"><a class="btn btn-fill" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">Message me</a><a class="btn btn-line" href="https://www.instagram.com/foking.good.nails/" target="_blank" rel="noopener">View my Instagram</a></div>
+        <button class="copy" id="copyIg">copy @foking.good.nails</button>
+        <a class="iggrid" href="https://www.instagram.com/foking.good.nails/" target="_blank" rel="noopener" aria-label="Open @foking.good.nails on Instagram" id="iggrid"></a>
+      </div>
+      <div class="rules" data-stagger>
+        <div class="rule"><b>order 1 week ahead</b><p>Every set is hand-painted, so please give me at least a week.</p></div>
+        <div class="rule"><b>size photo needed</b><p>Your thumb beside a coin lets me size your whole set.</p></div>
+        <div class="rule"><b>ambassador team</b><p>Creative, love nails, 14+ and good with social media? DM me to apply.</p></div>
+        <div class="rule"><b>based in Vaughan</b><p>I'll message you to set up pickup once your set is ready.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Nail set">
+  <div class="lb-card"><img id="lbImg" alt=""><div class="lb-info"><button class="lb-x" id="lbX" aria-label="Close">×</button><h3 id="lbT"></h3><p class="type" id="lbS"></p><p id="lbP"></p><button class="btn btn-fill" id="lbUse">Use as my inspo</button><div class="lb-nav"><button class="btn btn-line btn-sm" id="lbPrev">Previous</button><button class="btn btn-line btn-sm" id="lbNext">Next</button></div></div></div>
+</div>
+<div class="wipe" id="wipe" aria-hidden="true"><img src="LOGO_DATA" alt=""></div>
+<canvas class="bows" id="bows" aria-hidden="true"></canvas>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000)}
+const ORDER_EMAIL='';
+
+/* ---------- loading screen: polish bottle fills up ---------- */
+(function(){const L=$('#loader'),t0=performance.now(),MIN=reduce?200:2200,msgs=['mixing your colours','shaping the tips','adding the bows','almost dry'];let done=false;
+  function step(){if(done)return;const k=Math.min(1,(performance.now()-t0)/MIN);const e=1-Math.pow(1-k,2);
+    $('#fill').setAttribute('y',118-e*78);$('#fill2').setAttribute('y',122-e*72);$('#lpct').textContent=Math.round(e*100)+'%';$('#lmsg').textContent=msgs[Math.min(3,Math.floor(k*4))];
+    if(k<1)requestAnimationFrame(step);else finish()}
+  function finish(){if(done)return;done=true;L.classList.add('out');setTimeout(()=>L.hidden=true,700);bowBurst(innerWidth/2,innerHeight/2,26)}
+  L.addEventListener('click',finish);requestAnimationFrame(step)})();
+
+/* ---------- tiny bow confetti ---------- */
+const bc=$('#bows'),bg=bc.getContext('2d');let bits=[];
+function sizeB(){bc.width=innerWidth*devicePixelRatio;bc.height=innerHeight*devicePixelRatio}sizeB();addEventListener('resize',sizeB);
+function bowBurst(x,y,n){if(reduce)return;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=3+Math.random()*6;bits.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,r:Math.random()*6,vr:(Math.random()-.5)*.3,s:.7+Math.random()*.7,c:['#B8235A','#F3B6C8','#C9A24A','#FFFFFF'][i%4],l:1})}if(bits.length===n)requestAnimationFrame(drawB)}
+function drawB(){const d=devicePixelRatio;bg.clearRect(0,0,bc.width,bc.height);bits.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.vy+=.25;b.vx*=.98;b.r+=b.vr;b.l-=.012;
+  bg.save();bg.translate(b.x*d,b.y*d);bg.rotate(b.r);bg.scale(b.s*d,b.s*d);bg.globalAlpha=Math.max(0,b.l);bg.fillStyle=b.c;bg.strokeStyle='rgba(142,26,69,.4)';
+  bg.beginPath();bg.ellipse(-6,0,6,4,-.4,0,7);bg.ellipse(6,0,6,4,.4,0,7);bg.fill();bg.beginPath();bg.arc(0,0,2.2,0,7);bg.fill();bg.restore()});
+  bits=bits.filter(b=>b.l>0&&b.y<innerHeight+40);if(bits.length)requestAnimationFrame(drawB);else bg.clearRect(0,0,bc.width,bc.height)}
+
+/* ---------- magnetic buttons (desktop) ---------- */
+if(!reduce&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+  document.addEventListener('pointermove',e=>{const b=e.target.closest&&e.target.closest('.btn-fill,.btn-white');$$('.btn-fill.mag,.btn-white.mag').forEach(x=>{if(x!==b){x.classList.remove('mag');x.style.transform=''}});
+    if(!b)return;const r=b.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);b.classList.add('mag');b.style.transform=`translate(${dx*.18}px,${dy*.3}px)`})}
+
+/* ---------- hero letters drop in ---------- */
+$$('#hero .ln').forEach((ln,j)=>{const t=ln.textContent;ln.textContent='';[...t].forEach((ch,i)=>{const s=document.createElement('span');s.textContent=ch===' '?' ':ch;s.style.animationDelay=(2.3+j*.3+i*.05)+'s';ln.appendChild(s)})});
+
+/* ---------- tabs / views ---------- */
+const VIEWS=['home','design','sets','prices','order','contact'];let view='';
+function moveInd(){const a=$('#tabs a[aria-current="page"]'),ind=$('#ind');if(!a)return;ind.style.left=a.offsetLeft+'px';ind.style.width=a.offsetWidth+'px'}
+let wipeT=0,first=true;
+function stagger(root){root.querySelectorAll('[data-stagger]').forEach(g=>[...g.children].forEach((c,i)=>{c.classList.remove('rise');void c.offsetWidth;c.style.animationDelay=(.08+i*.06)+'s';c.classList.add('rise')}))}
+function swap(v){$$('.view').forEach(s=>s.hidden=s.dataset.view!==v);scrollTo(0,0);place3D();stagger($(`.view[data-view="${v}"]`))}
+function show(v){if(!VIEWS.includes(v))v='home';if(v===view)return;view=v;
+  $$('#tabs a').forEach(a=>{if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});moveInd();
+  if(first||reduce){first=false;swap(v);return}
+  const w=$('#wipe');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');clearTimeout(wipeT);wipeT=setTimeout(()=>swap(view),260)}
+addEventListener('hashchange',()=>show(location.hash.slice(1)));addEventListener('resize',moveInd);
+function nav(v){if(location.hash==='#'+v)show(v);else location.hash=v}
+
+/* ---------- her sets ---------- */
+const SETS=[
+ {img:'PH_pearl-french',t:'pearl french',s:'Design with charms',c:'charms',p:'Soft nude french with pearl chains and pink bows.'},
+ {img:'PH_polka-french',t:'polka & french',s:'Design without charms',c:'design',p:'Nude almonds mixing white dots and french tips.'},
+ {img:'PH_pink-ombre',t:'baby pink ombre',s:'Simple design',c:'simple',p:'Long almond, white fading into baby pink.'},
+ {img:'PH_candy-stripe',t:'candy stripes',s:'Design without charms',c:'design',p:'Stripes and dots in red, yellow and blue.'},
+ {img:'PH_cherry-blossom',t:'cherry blossom',s:'Customized design',c:'custom',p:'Hand-painted blossoms on a sheer red fade.'},
+ {img:'PH_blue-lemon-charms',t:'lemons & bows',s:'Design with charms',c:'charms',p:'Blue and lemon set with 3D flowers and bows.'},
+ {img:'PH_lemon-blue',t:'ciao from italy',s:'Customized design',c:'custom',p:'Lemon slices, blue dots and stripes.'},
+ {img:'PH_pink-polka',t:'pink polka',s:'Design without charms',c:'design',p:'Hot pink dots with candy stripes.'},
+ {img:'PH_plaid-french',t:'plaid french',s:'Simple design',c:'simple',p:'Square french tips with two plaid accents.'},
+ {img:'PH_bow-french',t:'bow french',s:'Design with charms',c:'charms',p:'Long square french with little white bows.'},
+ {img:'PH_pastel-dot-french',t:'pastel dot tips',s:'Design without charms',c:'design',p:'Almond french tips in pink, blue and yellow dots.'}
+];
+const FILT=[['all','All'],['simple','Simple'],['design','Design'],['charms','With charms'],['custom','Customized']];let filt='all',lbIdx=0;
+FILT.forEach(([k,n])=>{const b=document.createElement('button');b.className='pill';b.textContent=n;b.setAttribute('aria-pressed',k==='all');b.onclick=()=>{filt=k;$$('#filters .pill').forEach(x=>x.setAttribute('aria-pressed',x===b));renderGrid()};$('#filters').appendChild(b)});
+function vis(){return SETS.map((s,i)=>i).filter(i=>filt==='all'||SETS[i].c===filt)}
+function renderGrid(){const g=$('#grid');g.innerHTML='';vis().forEach(i=>{const s=SETS[i],b=document.createElement('button');b.className='shot';b.innerHTML=`<img alt="${s.t} nail set" loading="lazy"><span>${s.t}</span><small>${s.s}</small>`;b.querySelector('img').src=s.img;b.onclick=()=>openLb(i);g.appendChild(b)});stagger(g.parentNode)}
+renderGrid();
+[...SETS,...SETS].forEach((s,i)=>{const im=document.createElement('img');im.src=s.img;im.alt=i<SETS.length?s.t:'';im.onclick=()=>{nav('sets');setTimeout(()=>openLb(i%SETS.length),80)};$('#marq').appendChild(im)});
+SETS.slice(0,9).forEach(s=>{const im=document.createElement('img');im.src=s.img;im.alt='';$('#iggrid').appendChild(im)});
+function openLb(i){lbIdx=i;const s=SETS[i];$('#lbImg').src=s.img;$('#lbImg').alt=s.t+' nail set';$('#lbT').textContent=s.t;$('#lbS').textContent=s.s;$('#lbP').textContent=s.p;$('#lb').hidden=false;$('#lbX').focus()}
+function stepLb(d){const v=vis(),k=v.indexOf(lbIdx);openLb(v[(k+d+v.length)%v.length])}
+$('#lbX').onclick=()=>$('#lb').hidden=true;$('#lb').addEventListener('click',e=>{if(e.target.id==='lb')$('#lb').hidden=true});
+$('#lbPrev').onclick=()=>stepLb(-1);$('#lbNext').onclick=()=>stepLb(1);
+addEventListener('keydown',e=>{if($('#lb').hidden)return;if(e.key==='Escape')$('#lb').hidden=true;if(e.key==='ArrowRight')stepLb(1);if(e.key==='ArrowLeft')stepLb(-1)});
+$('#lbUse').onclick=async e=>{await addInspoSrc(SETS[lbIdx].img);$('#lb').hidden=true;bowBurst(e.clientX,e.clientY,14);nav('order');go(1);toast('Added to your inspo')};
+
+/* ---------- prices ---------- */
+const TYPES=[['Plain colour',15,15,'One colour, glossy or matte','plain'],['French tips',25,25,'Classic tip in any colour','french'],['Simple design',30,35,'Dots, ombre or a little art','simple'],
+ ['Design, no charms',35,50,'Painted patterns, no 3D bits','design'],['Design with charms',45,60,'Pearls, bows, gems and more','charms'],['Customized',50,70,'Your inspo, fully hand-painted','custom']];
+const LENS=['Short','Medium','Long','Extra long'];let cT=0,cL=0,shown=[15,15];
+function pills(el,list,get,set,label){list.forEach((v,i)=>{const b=document.createElement('button');b.className='pill';b.textContent=label?label(v):(Array.isArray(v)?v[0]:v);b.setAttribute('aria-pressed',i===get());
+  b.onclick=()=>{set(i);el.querySelectorAll('.pill').forEach((x,j)=>x.setAttribute('aria-pressed',j===i))};el.appendChild(b)})}
+function range(){const t=TYPES[cT];let lo=t[1],hi=t[2];if(cL>=2){if(hi===lo)hi=lo+5;else lo=Math.round((lo+hi)/2)}if(cL===3)hi+=5;return[lo,hi]}
+const fmt=(lo,hi)=>lo===hi?'$'+lo:'$'+lo+'–'+hi;
+function countTo(el,from,to,ms){if(reduce){el.textContent=fmt(to[0],to[1]);return}const t0=performance.now();
+  (function f(now){const k=Math.min(1,(now-t0)/ms),e=1-Math.pow(1-k,3),lo=Math.round(from[0]+(to[0]-from[0])*e),hi=Math.round(from[1]+(to[1]-from[1])*e);el.textContent=fmt(lo,hi);if(k<1)requestAnimationFrame(f)})(t0)}
+function calc(){const r=range();countTo($('#cOut'),shown,r,520);shown=r;$('#eName').textContent=TYPES[cT][0];
+  $('#cOut').animate&&!reduce&&$('#cOut').animate([{transform:'scale(1.18)'},{transform:'none'}],{duration:380,easing:'cubic-bezier(.2,.9,.2,1.4)'})}
+TYPES.forEach((t,i)=>{const b=document.createElement('button');b.className='tile';b.setAttribute('aria-pressed',i===cT);
+  b.innerHTML=`<i class="nl ${t[4]}" aria-hidden="true"></i><span><span class="nm">${t[0]}</span><small>${t[3]}</small></span><span class="pr">${fmt(t[1],t[2]).replace('–','-')}</span>`;
+  b.onclick=()=>{cT=i;$$('.tile').forEach((x,j)=>x.setAttribute('aria-pressed',j===i));calc()};$(i<3?'#tilesA':'#tilesB').appendChild(b)});
+LENS.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l;b.setAttribute('aria-pressed',i===cL);b.onclick=()=>{cL=i;$$('#eLen button').forEach((x,j)=>x.setAttribute('aria-pressed',j===i));calc()};$('#eLen').appendChild(b)});
+$('#cOut').textContent='$15';
+for(let i=1;i<=10;i++){const b=document.createElement('button');b.textContent=i===5?'10% off':i===10?'free!':i;b.setAttribute('aria-label','Stamp '+i);
+  b.onclick=e=>{$$('#stamps button').forEach((x,j)=>x.classList.toggle('on',j<i));if(i===5||i===10)bowBurst(e.clientX,e.clientY,18)};$('#stamps').appendChild(b)}
+
+/* ---------- 3D studio ---------- */
+const STYLES=[{id:'solid',n:'Solid'},{id:'french',n:'French'},{id:'polka',n:'Polka dots'},{id:'ombre',n:'Ombre'},{id:'stripes',n:'Stripes'},{id:'hearts',n:'Hearts'}];
+const COLS=[['Nude','#E8B4A2'],['Baby pink','#F7C6D3'],['Hot pink','#E84A8A'],['Raspberry','#B8235A'],['Cherry red','#C8102E'],['Milky white','#F7F2EE'],['Lilac','#C8B6E8'],['Baby blue','#9FCBEB'],['Lemon','#F5DB5C'],['Mint','#A8DFC4'],['Black','#1E1A1C'],['Gold','#D4AF5A']];
+const FIN=['Glossy','Matte','Chrome','Shimmer'];
+const SHAPES=['Almond','Square','Coffin','Stiletto','Oval'];
+const LEN3={Short:1.15,Medium:1.45,Long:1.8,'Extra long':2.15};
+const CHARMS=['Bows','Pearls','Gems'];
+const d3={style:1,base:'#E8B4A2',baseN:'Nude',acc:'#F7F2EE',accN:'Milky white',fin:0,shape:0,len:'Medium',charms:[]};
+pills($('#styles'),STYLES.map(s=>s.n),()=>d3.style,i=>{d3.style=i;rebuild('hop')});
+pills($('#finishes'),FIN,()=>d3.fin,i=>{d3.fin=i;rebuild('hop')});
+pills($('#shapes'),SHAPES,()=>d3.shape,i=>{d3.shape=i;rebuild()});
+pills($('#lens'),Object.keys(LEN3),()=>1,i=>{d3.len=Object.keys(LEN3)[i];rebuild()});
+CHARMS.forEach(c=>{const b=document.createElement('button');b.className='pill';b.textContent=c;b.setAttribute('aria-pressed','false');b.onclick=()=>{const k=d3.charms.indexOf(c);k<0?d3.charms.push(c):d3.charms.splice(k,1);b.setAttribute('aria-pressed',k<0);rebuild()};$('#charms').appendChild(b)});
+function swatches(el,key,nameKey){COLS.forEach(([n,h])=>{const b=document.createElement('button');b.style.background=h;b.title=n;b.setAttribute('aria-label',n);b.setAttribute('aria-pressed',d3[key]===h);
+    b.onclick=()=>{d3[key]=h;d3[nameKey]=n;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));rebuild('hop')};el.appendChild(b)});
+  const lab=document.createElement('label');lab.title='Pick any colour';lab.innerHTML='+<input type="color" aria-label="Pick any colour">';const inp=lab.querySelector('input');inp.value=d3[key];
+  inp.oninput=()=>{d3[key]=inp.value;d3[nameKey]='Custom '+inp.value;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));lab.style.background=inp.value;clearTimeout(lab._t);lab._t=setTimeout(()=>rebuild('hop'),90)};el.appendChild(lab)}
+swatches($('#baseSw'),'base','baseN');swatches($('#accSw'),'acc','accN');
+$$('#accSw button').forEach(b=>b.setAttribute('aria-pressed',b.title==='Milky white'));
+function estimate(){const st=STYLES[d3.style].id;if(d3.charms.length)return '$45–60';if(st==='solid')return '$15';if(st==='french')return '$25';return '$30–35'}
+function labels(){$('#vStyle').textContent=STYLES[d3.style].n;$('#vBase').textContent=d3.baseN;$('#vAcc').textContent=d3.accN;$('#vFin').textContent=FIN[d3.fin];$('#vShape').textContent=SHAPES[d3.shape];$('#vLen').textContent=d3.len;$('#vCh').textContent=d3.charms.join(', ')||'None';{const e=$('#est'),n=estimate();if(e.textContent!==n){e.textContent=n;if(!reduce&&e.animate)e.animate([{transform:'scale(1.25)'},{transform:'none'}],{duration:400,easing:'cubic-bezier(.2,.9,.2,1.4)'})}}}
+
+let hasGL=!!(window.THREE&&THREE.OrbitControls),renderer,scene,camera,controls,nailGroup,lid,lidOpen=true,lidT=0,spin=!reduce;
+if(hasGL){try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true})}catch(e){hasGL=false}}
+/* A real press-on shell: rounded cuticle, straight sidewalls, shaped free edge, a C-curve across the width,
+   an apex hump, a gentle downward arc to the tip, and a shell that thins out toward the edges. */
+const NAIL={C:.34,apex:.06,dip:.12};
+function hwF(kind,v,L){const W=.5,r0=.2;let w=W*(1+.05*v/L),s,t;
+  if(v<r0){t=(r0-v)/r0;w*=Math.sqrt(Math.max(0,1-t*t))}
+  if(kind==='Square'){if(v>L-.06){t=(v-(L-.06))/.06;w*=Math.sqrt(Math.max(0,1-t*t*.3))}}
+  else if(kind==='Coffin'){s=L*.58;if(v>s){t=(v-s)/(L-s);w*=1-.5*t}}
+  else if(kind==='Stiletto'){s=L*.36;if(v>s){t=(v-s)/(L-s);w*=Math.pow(1-t,1.2)}}
+  else if(kind==='Oval'){s=L*.66;if(v>s){t=(v-s)/(L-s);w*=Math.sqrt(Math.max(0,1-t*t))}}
+  else{s=L*.48;if(v>s){t=(v-s)/(L-s);w*=Math.pow(Math.max(0,Math.cos(t*Math.PI/2)),.72)}}
+  return Math.max(w,0)}
+function topZ(u,v,L,hw){const q=1-u*u;return NAIL.C*q*(hw/.5)+NAIL.apex*Math.pow(Math.sin(Math.PI*Math.min(1,v/L)),1.5)*q-NAIL.dip*Math.pow(v/L,2)*L*.6}
+function surfZ(x,v,L){const hw=hwF(SHAPES[d3.shape],v,L);if(hw<1e-4)return topZ(0,v,L,0);return topZ(Math.max(-1,Math.min(1,x/hw)),v,L,hw)}
+function nailGeo(kind,L){const NU=28,NV=64,pos=[],uv=[],idx=[],B=(NU+1)*(NV+1),id=(i,j)=>j*(NU+1)+i;
+  const top=[],bot=[];
+  for(let j=0;j<=NV;j++){const v=j/NV*L,hw=hwF(kind,v,L);for(let i=0;i<=NU;i++){const u=i/NU*2-1,x=hw*u,z=topZ(u,v,L,hw);
+    const th=.036*(1-.6*u*u)*Math.min(1,.4+v*2.4)*(1-.35*Math.pow(v/L,3));top.push(x,v,z);bot.push(x,v,z-th);uv.push(i/NU,j/NV)}}
+  pos.push(...top,...bot);uv.push(...uv.slice());
+  for(let j=0;j<NV;j++)for(let i=0;i<NU;i++){const a=id(i,j),b=id(i+1,j),c=id(i+1,j+1),d=id(i,j+1);idx.push(a,b,d,b,c,d)}
+  const topCount=idx.length;
+  for(let j=0;j<NV;j++)for(let i=0;i<NU;i++){const a=B+id(i,j),b=B+id(i+1,j),c=B+id(i+1,j+1),d=B+id(i,j+1);idx.push(a,d,b,b,d,c)}
+  for(let j=0;j<NV;j++)[0,NU].forEach(i=>{const a=id(i,j),d=id(i,j+1);idx.push(a,d,B+a,B+a,d,B+d)});
+  for(let i=0;i<NU;i++)[0,NV].forEach(j=>{const a=id(i,j),b=id(i+1,j);idx.push(a,b,B+a,b,B+b,B+a)});
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
+  g.setIndex(idx);g.addGroup(0,topCount,0);g.addGroup(topCount,idx.length-topCount,1);g.computeVertexNormals();return g}
+function nailTex(st,idx){const c=document.createElement('canvas');c.width=256;c.height=512;const g=c.getContext('2d'),W=256,H=512,B=d3.base,A=d3.acc;
+  g.fillStyle=B;g.fillRect(0,0,W,H);
+  const tip=(h)=>{g.fillStyle=A;g.beginPath();g.moveTo(0,0);g.lineTo(W,0);g.lineTo(W,h);g.quadraticCurveTo(W/2,h*.4,0,h);g.fill()};
+  if(st==='french')tip(150);
+  else if(st==='polka'){if(idx%3===1)tip(140);else{g.fillStyle=A;for(let y=30;y<H;y+=52)for(let x=(y/52%2?40:14);x<W;x+=52){g.beginPath();g.arc(x,y,11,0,7);g.fill()}}}
+  else if(st==='ombre'){const gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,A);gr.addColorStop(.6,B);gr.addColorStop(1,B);g.fillStyle=gr;g.fillRect(0,0,W,H)}
+  else if(st==='stripes'){if(idx%2){g.fillStyle=A;for(let i=-H;i<H*2;i+=64){g.save();g.translate(0,i);g.rotate(-.35);g.fillRect(-50,0,W*2,26);g.restore()}}else tip(120)}
+  else if(st==='hearts'){g.fillStyle=A;const hs=[[128,140,46],[70,300,30],[190,330,26],[120,430,22]];(idx%2?hs:hs.slice(0,1)).forEach(([x,y,s])=>{g.beginPath();g.moveTo(x,y+s*.9);g.bezierCurveTo(x-s*1.6,y-s*.2,x-s*.6,y-s*1.4,x,y-s*.4);g.bezierCurveTo(x+s*.6,y-s*1.4,x+s*1.6,y-s*.2,x,y+s*.9);g.fill()})}
+  if(FIN[d3.fin]==='Shimmer'){for(let i=0;i<500;i++){g.fillStyle=`rgba(255,255,255,${Math.random()*.6})`;g.fillRect(Math.random()*W,Math.random()*H,2,2)}}
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;return t}
+function nailMat(st,idx){const f=FIN[d3.fin],map=nailTex(st,idx);
+  if(f==='Matte')return new THREE.MeshStandardMaterial({map,roughness:.85,metalness:0,envMapIntensity:.4});
+  if(f==='Chrome')return new THREE.MeshPhysicalMaterial({map,roughness:.12,metalness:.95,clearcoat:1,envMapIntensity:1.4});
+  return new THREE.MeshPhysicalMaterial({map,roughness:.28,clearcoat:1,clearcoatRoughness:.04,envMapIntensity:.6})}
+function shellMat(){return new THREE.MeshPhysicalMaterial({color:new THREE.Color(d3.base).convertSRGBToLinear().lerp(new THREE.Color(0xffffff),.35),roughness:.35,clearcoat:.6,side:THREE.DoubleSide,envMapIntensity:.5})}
+const charmMat=c=>new THREE.MeshPhysicalMaterial({color:new THREE.Color(c).convertSRGBToLinear(),roughness:.3,clearcoat:.7});
+function bowMesh(){const g=new THREE.Group(),m=charmMat('#F7B7C8');[-1,1].forEach(s=>{const l=new THREE.Mesh(new THREE.SphereGeometry(.12,16,12),m);l.scale.set(1.25,.7,.45);l.position.set(s*.12,0,0);l.rotation.z=s*.35;g.add(l);
+  const tl=new THREE.Mesh(new THREE.CylinderGeometry(.025,.035,.22,8),m);tl.position.set(s*.06,-.13,0);tl.rotation.z=s*.35;g.add(tl)});g.add(new THREE.Mesh(new THREE.SphereGeometry(.05,12,10),m));return g}
+function pearlLine(L){const g=new THREE.Group(),m=new THREE.MeshPhysicalMaterial({color:0xfff8f0,roughness:.18,metalness:.1,clearcoat:1});for(let k=0;k<7;k++){const t=k/6,p=new THREE.Mesh(new THREE.SphereGeometry(.035,12,10),m);const x=(t-.5)*.5,y=L*(.35+Math.abs(t-.5)*.45);p.position.set(x,y,surfZ(x,y,L)+.025);g.add(p)}return g}
+function gemCluster(L){const g=new THREE.Group(),m=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:0,metalness:.2,clearcoat:1,envMapIntensity:2});[[0,.55,.07],[-.1,.45,.045],[.1,.47,.045]].forEach(([x,y,s])=>{const d=new THREE.Mesh(new THREE.OctahedronGeometry(s,0),m);d.position.set(x,L*y,surfZ(x,L*y,L)+.03);d.scale.z=.5;g.add(d)});return g}
+var popStart=0,popMode='full';
+function rebuild(mode){labels();if(!hasGL)return;popMode=mode||'full';popStart=performance.now();
+  if(nailGroup){nailGroup.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){[].concat(o.material).forEach(m=>{if(m.map&&m.map.dispose)m.map.dispose();m.dispose()})}});scene.remove(nailGroup)}
+  nailGroup=new THREE.Group();scene.add(nailGroup);
+  const st=STYLES[d3.style].id,shape=SHAPES[d3.shape],L=LEN3[d3.len],widths=[.95,.76,.8,.74,.62];
+  for(let row=0;row<2;row++)for(let i=0;i<5;i++){const idx=row*5+i,w=widths[row?4-i:i];
+    const m=new THREE.Mesh(nailGeo(shape,L),[nailMat(st,idx),shellMat()]);m.castShadow=true;m.scale.set(w*.72,.72,.72);
+    const h=new THREE.Group();h.add(m);h.rotation.x=-Math.PI/2;h.rotation.z=row?Math.PI:0;h.position.set((i-2)*.76,.06,row?.1:-.1);h.userData.d=(row?9-idx:idx)*.05;h.userData.y=.06;h.rotation.y=Math.sin(idx*7.3)*.06;
+    if(d3.charms.includes('Pearls')&&(idx===1||idx===8))m.add(pearlLine(L));
+    if(d3.charms.includes('Bows')&&(idx===3||idx===6)){const b=bowMesh();b.position.set(0,L*.42,surfZ(0,L*.42,L)+.05);b.scale.setScalar(1.1);m.add(b)}
+    if(d3.charms.includes('Gems')&&(idx===2||idx===7))m.add(gemCluster(L));
+    nailGroup.add(h)}}
+function init3D(){
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.8;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  scene=new THREE.Scene();
+  const pm=new THREE.PMREMGenerator(renderer),es=new THREE.Scene();es.add(new THREE.Mesh(new THREE.BoxGeometry(20,20,20),new THREE.MeshBasicMaterial({color:0x6e4a55,side:THREE.BackSide})));
+  [[0,8,0,10,.2,10,1.5],[-8,3,2,.2,6,6,.9],[8,4,-3,.2,5,6,.7]].forEach(a=>{const b=new THREE.Mesh(new THREE.BoxGeometry(a[3],a[4],a[5]),new THREE.MeshBasicMaterial({color:new THREE.Color(a[6],a[6],a[6])}));b.position.set(a[0],a[1],a[2]);es.add(b)});
+  scene.environment=pm.fromScene(es,.04).texture;
+  camera=new THREE.PerspectiveCamera(32,1,.1,60);camera.position.set(0,4.3,4.1);
+  controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.enablePan=false;controls.minDistance=2.4;controls.maxDistance=11;controls.maxPolarAngle=Math.PI*.46;controls.target.set(0,.15,0);
+  controls.autoRotate=spin;controls.autoRotateSpeed=.8;controls.addEventListener('start',()=>{if(view==='design'){spin=false;controls.autoRotate=false;$('#spin').textContent='Spin: off'}});
+  scene.add(new THREE.HemisphereLight(0xfff3f6,0xc99aa8,.35));
+  const key=new THREE.DirectionalLight(0xfff6ef,1.5);key.position.set(3,7,4);key.castShadow=true;key.shadow.mapSize.set(1024,1024);Object.assign(key.shadow.camera,{left:-4,right:4,top:4,bottom:-4});key.shadow.radius=4;scene.add(key);
+  const warm=new THREE.DirectionalLight(0xffd9b8,.6);warm.position.set(-5,3,-3);scene.add(warm);
+  const table=new THREE.Mesh(new THREE.CircleGeometry(9,64),new THREE.MeshStandardMaterial({color:0xE9B3C3,roughness:.85,envMapIntensity:.4}));table.rotation.x=-Math.PI/2;table.position.y=-.2;table.receiveShadow=true;scene.add(table);
+  const clear=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.05,transparent:true,opacity:.1,clearcoat:1,side:THREE.DoubleSide,depthWrite:false});
+  const edge=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.05,transparent:true,opacity:.28,clearcoat:1,depthWrite:false});
+  const W=4.1,D=3.4,base=new THREE.Group();scene.add(base);
+  const floor=new THREE.Mesh(new THREE.BoxGeometry(W,.06,D),clear);floor.position.y=-.17;floor.receiveShadow=true;base.add(floor);
+  [[0,0,D/2,W,.34,.05],[0,0,-D/2,W,.34,.05],[W/2,0,0,.05,.34,D],[-W/2,0,0,.05,.34,D]].forEach(a=>{const w=new THREE.Mesh(new THREE.BoxGeometry(a[3],a[4],a[5]),edge);w.position.set(a[0],a[1],a[2]);base.add(w)});
+  lid=new THREE.Group();lid.position.set(0,.17,-D/2);base.add(lid);
+  const lt=new THREE.Mesh(new THREE.BoxGeometry(W,.05,D),clear);lt.position.set(0,0,D/2);lid.add(lt);
+  [[0,-.08,D,W,.16,.05],[W/2,-.08,D/2,.05,.16,D],[-W/2,-.08,D/2,.05,.16,D]].forEach(a=>{const w=new THREE.Mesh(new THREE.BoxGeometry(a[3],a[4],a[5]),edge);w.position.set(a[0],a[1],a[2]);lid.add(w)});
+  const stk=new THREE.Mesh(new THREE.CircleGeometry(.62,48),new THREE.MeshStandardMaterial({map:new THREE.TextureLoader().load($('.logo img').src,t=>{t.encoding=THREE.sRGBEncoding}),roughness:.7,transparent:true}));
+  stk.rotation.x=-Math.PI/2;stk.position.set(0,.03,D/2);lid.add(stk);
+  rebuild();
+  new ResizeObserver(resize3D).observe($('#homeStage'));new ResizeObserver(resize3D).observe($('#studioStage'));
+  let last=performance.now();(function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;lidT+=((lidOpen?1:0)-lidT)*Math.min(1,dt*4);lid.rotation.x=-lidT*1.95;animNails(now);
+    if(renderer.domElement.isConnected&&renderer.domElement.offsetParent){controls.update();renderer.render(scene,camera)}requestAnimationFrame(tick)})(last)}
+function easeBack(k){const c=1.7;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2)}
+function animNails(now){if(!nailGroup)return;const T=(now-popStart)/1000;nailGroup.children.forEach(h=>{const k=Math.max(0,Math.min(1,(T-h.userData.d)/.55));
+  if(reduce){h.scale.setScalar(1);h.position.y=h.userData.y;return}
+  if(popMode==='full'){const s=k<=0?.001:easeBack(k);h.scale.setScalar(Math.max(.001,s));h.position.y=h.userData.y+(1-k)*.5}
+  else{h.scale.setScalar(1);h.position.y=h.userData.y+Math.sin(Math.PI*k)*.22;h.rotation.y=Math.sin(Math.PI*k)*.15}})}
+function resize3D(){if(!hasGL||!renderer.domElement.parentElement)return;const r=renderer.domElement.parentElement.getBoundingClientRect();if(!r.width)return;renderer.setSize(r.width,r.height,false);camera.aspect=r.width/Math.max(1,r.height);camera.fov=camera.aspect<1?44:32;camera.updateProjectionMatrix()}
+function place3D(){if(!hasGL)return;const host=view==='design'?$('#studioStage'):$('#homeStage');if(view!=='design'&&view!=='home')return;
+  if(renderer.domElement.parentElement!==host)host.prepend(renderer.domElement);controls.autoRotate=view==='home'?!reduce:spin;resize3D()}
+if(hasGL)init3D();else{['#homeStage','#studioStage'].forEach(s=>$(s).insertAdjacentHTML('beforeend','<div class="nogl">3D preview isn\'t available on this device. Everything else works.</div>'));$('#lid').hidden=$('#spin').hidden=true;labels()}
+$('#lid').onclick=()=>{lidOpen=!lidOpen;$('#lid').textContent=lidOpen?'Close lid':'Open lid'};
+$('#spin').onclick=()=>{spin=!spin;if(controls)controls.autoRotate=spin;$('#spin').textContent='Spin: '+(spin?'on':'off')};
+$('#useDesign').onclick=async e=>{
+  if(hasGL){renderer.render(scene,camera);await addInspoSrc(renderer.domElement.toDataURL('image/jpeg',.9))}
+  const desc=`${STYLES[d3.style].n}, ${d3.baseN} base, ${d3.accN} accent, ${FIN[d3.fin]}, ${SHAPES[d3.shape]}, ${d3.len}${d3.charms.length?', charms: '+d3.charms.join(' + '):''}`;
+  $('#fNotes').value=($('#fNotes').value?$('#fNotes').value+'\n':'')+'My 3D design: '+desc;
+  selectPill('#oShape',SHAPES[d3.shape],'shape');selectPill('#oLen',d3.len,'length');
+  bowBurst(e.clientX,e.clientY,18);nav('order');go(1);toast('Your 3D design was added as inspo')};
+
+/* ---------- order ---------- */
+const OEXTRA=['3D bows','Charms','Pearls','Chrome','Cat-eye','Gems'];
+const o={inspo:[],thumb:[],side:'',coin:'',shape:'',length:'',extras:[]};
+function opills(el,list,key,multi){list.forEach(v=>{const b=document.createElement('button');b.className='pill';b.dataset.v=v;b.textContent=v;b.setAttribute('aria-pressed','false');el.appendChild(b)});bindP(el,key,multi)}
+function bindP(el,key,multi){el.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;
+  if(multi){const i=o[key].indexOf(b.dataset.v);i<0?o[key].push(b.dataset.v):o[key].splice(i,1);b.setAttribute('aria-pressed',i<0)}
+  else{o[key]=b.dataset.v;el.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b))}
+  if(key==='coin')$('#coinTxt').textContent=b.dataset.v})}
+function selectPill(sel,v,key){o[key]=v;$$(sel+' .pill').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===v))}
+opills($('#oShape'),SHAPES,'shape');opills($('#oLen'),Object.keys(LEN3),'length');opills($('#oExtra'),OEXTRA,'extras',true);bindP($('#side'),'side');bindP($('#coin'),'coin');
+function shrink(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.85))};im.onerror=rej;im.src=src})}
+function readFile(f){return new Promise((res,rej)=>{if(!f.type.startsWith('image/'))return rej();const fr=new FileReader();fr.onload=()=>shrink(fr.result).then(res,rej);fr.onerror=rej;fr.readAsDataURL(f)})}
+async function addInspoSrc(src){if(o.inspo.length>=4){toast('Up to 4 inspo photos');return}o.inspo.push(await shrink(src));renderT('inspo')}
+async function addFiles(files,key,max){for(const f of files){if(o[key].length>=max){toast(max===1?'One thumb photo is enough':'Up to 4 inspo photos');break}try{o[key].push(await readFile(f))}catch(e){toast("That file isn't a photo")}}renderT(key)}
+function renderT(key){const box=key==='inspo'?$('#inspoList'):$('#thumbList');box.innerHTML='';o[key].forEach((src,i)=>{const f=document.createElement('figure');f.innerHTML='<img alt=""><button type="button" aria-label="Remove photo">×</button>';f.querySelector('img').src=src;f.querySelector('button').onclick=()=>{o[key].splice(i,1);renderT(key)};box.appendChild(f)});if(o.inspo.length)$('#err1').textContent='';if(o.thumb.length)$('#err2').textContent=''}
+[['#inspoCam','inspo',4],['#inspoFile','inspo',4],['#thumbCam','thumb',1],['#thumbFile','thumb',1]].forEach(([id,k,m])=>$(id).addEventListener('change',e=>{addFiles([...e.target.files],k,m);e.target.value=''}));
+[['#drop1','inspo',4],['#drop2','thumb',1]].forEach(([id,k,m])=>{const d=$(id);d.addEventListener('dragover',e=>{e.preventDefault();d.classList.add('over')});d.addEventListener('dragleave',()=>d.classList.remove('over'));d.addEventListener('drop',e=>{e.preventDefault();d.classList.remove('over');addFiles([...e.dataTransfer.files],k,m)})});
+const minD=new Date();minD.setDate(minD.getDate()+7);$('#fDate').min=minD.toISOString().slice(0,10);
+function go(n){$$('[data-step]').forEach(s=>s.hidden=+s.dataset.step!==n);$('#doneBox').hidden=true;$$('#stepnav li').forEach((li,i)=>{li.classList.toggle('on',i+1===n);li.classList.toggle('done',i+1<n)});if(n===4)buildCard()}
+function check(n){
+  if(n===1&&!o.inspo.length){$('#err1').textContent='Add at least one inspo photo.';return false}
+  if(n===2){const m=[!o.side&&'which thumb',!o.coin&&'which coin',!o.thumb.length&&'a thumb photo'].filter(Boolean);if(m.length){$('#err2').textContent='Please choose '+m.join(', ')+'.';return false}}
+  if(n===3){const em=$('#fEmail').value.trim();const m=[!o.shape&&'a shape',!o.length&&'a length',!$('#fName').value.trim()&&'your name',(!em||!$('#fEmail').checkValidity())&&'a valid email',(!$('#fDate').value||$('#fDate').value<$('#fDate').min)&&'a date at least 1 week away'].filter(Boolean);
+    if(m.length){$('#err3').textContent='Please add '+m.join(', ')+'.';return false}$('#err3').textContent=''}
+  return true}
+$$('[data-next]').forEach(b=>b.onclick=()=>{if(check(+b.dataset.next-1)){go(+b.dataset.next);scrollTo({top:0,behavior:reduce?'auto':'smooth'})}});
+$$('[data-back]').forEach(b=>b.onclick=()=>go(+b.dataset.back));
+function loadI(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src})}
+function cover(g,im,x,y,w,h,r){g.save();g.beginPath();g.roundRect?g.roundRect(x,y,w,h,r):g.rect(x,y,w,h);g.clip();const k=Math.max(w/im.width,h/im.height);g.drawImage(im,x+(w-im.width*k)/2,y+(h-im.height*k)/2,im.width*k,im.height*k);g.restore()}
+let cardURL='';
+async function buildCard(){const W=1080,H=1500,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');try{await document.fonts.ready}catch(e){}
+  g.fillStyle='#FBEEF2';g.fillRect(0,0,W,H);g.strokeStyle='#B8235A';g.lineWidth=3;g.beginPath();for(let x=30;x<=W-30;x+=4)g.lineTo(x,30+Math.sin(x/18)*5);g.stroke();
+  const logo=await loadI($('.logo img').src);if(logo){g.save();g.beginPath();g.arc(120,130,64,0,7);g.clip();g.drawImage(logo,56,66,128,128);g.restore()}
+  g.fillStyle='#B8235A';g.font='76px "Caveat Brush", cursive';g.fillText('new order',220,140);g.font='28px "Courier Prime", monospace';g.fillText('FOKING GOOD NAILS',224,180);
+  const ins=(await Promise.all(o.inspo.map(loadI))).filter(Boolean),th=(await Promise.all(o.thumb.map(loadI))).filter(Boolean);
+  g.fillStyle='#3A1F28';g.font='700 26px "Courier Prime", monospace';g.fillText('INSPO',60,262);g.fillText((o.side+' THUMB + '+o.coin+' COIN').toUpperCase(),600,262);
+  const iy=280,ih=520;if(ins.length===1)cover(g,ins[0],60,iy,500,ih,18);else ins.forEach((im,i)=>{const w=245,h=ins.length>2?255:ih;cover(g,im,60+(i%2)*(w+10),iy+Math.floor(i/2)*(h+10),w,h,14)});
+  if(th[0])cover(g,th[0],600,iy,420,ih,18);
+  const d={name:$('#fName').value.trim(),ig:$('#fIg').value.trim(),email:$('#fEmail').value.trim(),date:$('#fDate').value,notes:$('#fNotes').value.trim()};
+  const rows=[['Shape',o.shape],['Length',o.length],['Extras',o.extras.join(', ')||'None'],['Need it by',d.date],['Name',d.name],['Instagram',d.ig||'-'],['Email',d.email]];
+  let y=890;rows.forEach(([k,v])=>{g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText(k,60,y);g.fillStyle='#3A1F28';g.font='700 30px "DM Sans", sans-serif';g.fillText(String(v).slice(0,46),320,y);
+    g.strokeStyle='rgba(184,35,90,.35)';g.lineWidth=2;g.beginPath();for(let x=60;x<=1020;x+=4)g.lineTo(x,y+18+Math.sin(x/10)*1.5);g.stroke();y+=62});
+  if(d.notes){g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText('Notes',60,y);g.fillStyle='#3A1F28';g.font='28px "DM Sans", sans-serif';let line='',ly=y;for(const w of d.notes.replace(/\n/g,' ').split(/\s+/)){const t=line?line+' '+w:w;if(g.measureText(t).width>690){g.fillText(line,320,ly);ly+=38;line=w;if(ly>y+76)break}else line=t}if(line&&ly<=y+76)g.fillText(line,320,ly)}
+  g.fillStyle='#B8235A';g.font='26px "Courier Prime", monospace';g.textAlign='center';g.fillText('@foking.good.nails · '+new Date().toLocaleDateString(),W/2,H-40);g.textAlign='left';
+  cardURL=c.toDataURL('image/jpeg',.88);$('#cardImg').src=cardURL}
+$('#sendBtn').onclick=async e=>{const btn=$('#sendBtn'),x=e.clientX,y=e.clientY;$('#err4').textContent='';
+  if(!ORDER_EMAIL){finish('This is a preview, so nothing was sent. On the live site your order card and photos go straight to my email.',x,y);return}
+  btn.disabled=true;btn.textContent='Sending...';
+  try{const fd=new FormData();fd.append('_subject','New nail order from '+$('#fName').value.trim());fd.append('_captcha','false');fd.append('_template','table');
+    fd.append('Name',$('#fName').value.trim());fd.append('Instagram',$('#fIg').value.trim());fd.append('email',$('#fEmail').value.trim());fd.append('Need it by',$('#fDate').value);
+    fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Thumb',o.side+' thumb, '+o.coin+' coin');fd.append('Notes',$('#fNotes').value.trim()||'-');
+    fd.append('attachment',await (await fetch(cardURL)).blob(),'order-card.jpg');
+    const r=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(ORDER_EMAIL),{method:'POST',body:fd,headers:{Accept:'application/json'}});if(!r.ok)throw 0;
+    finish("Thank you! I'll message you soon to confirm your price.",x,y)}
+  catch(err){$('#err4').textContent="Your order didn't send. Try again, or DM me the order card.";btn.disabled=false;btn.textContent='Send my order'}};
+function finish(msg,x,y){$$('[data-step]').forEach(s=>s.hidden=true);$('#doneMsg').textContent=msg;$('#doneBox').hidden=false;$$('#stepnav li').forEach(li=>{li.classList.remove('on');li.classList.add('done')});bowBurst(x||innerWidth/2,y||innerHeight/2,34)}
+$('#again').onclick=()=>{Object.assign(o,{inspo:[],thumb:[],side:'',coin:'',shape:'',length:'',extras:[]});renderT('inspo');renderT('thumb');$$('.opanel .pill').forEach(x=>x.setAttribute('aria-pressed','false'));['#fName','#fIg','#fEmail','#fDate','#fNotes'].forEach(id=>$(id).value='');const b=$('#sendBtn');b.disabled=false;b.textContent='Send my order';go(1)};
+$('#copyIg').onclick=()=>{(navigator.clipboard?navigator.clipboard.writeText('@foking.good.nails'):Promise.reject()).then(()=>toast('Copied')).catch(()=>toast('@foking.good.nails'))};
+
+go(1);show(location.hash.slice(1)||'home');setTimeout(moveInd,300);
+})();
+</script>
