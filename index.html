@@ -344,7 +344,7 @@ textarea.inp{min-height:84px;resize:vertical}
         <p class="lead">Custom press-ons, hand-painted one set at a time. Design yours in 3D, send me your inspo, and I'll make it.</p>
         <div class="ctas"><a class="btn btn-fill" href="#design">Design your set</a><a class="btn btn-line" href="#order">Order with your inspo</a></div>
         <div class="quick" data-stagger>
-          <a href="#prices"><b>from $15</b><span>see the price list</span></a>
+          <a href="#prices"><b>from $10</b><span>see the price list</span></a>
           <a href="#sets"><b>11 sets</b><span>recent work</span></a>
           <a href="#contact"><b>1 week</b><span>order ahead</span></a>
         </div>
@@ -373,7 +373,7 @@ textarea.inp{min-height:84px;resize:vertical}
         <div class="grp"><b>Shape <span id="vShape">Almond</span></b><div class="row" id="shapes" role="group" aria-label="Shape"></div></div>
         <div class="grp"><b>Length <span id="vLen">Medium</span></b><div class="row" id="lens" role="group" aria-label="Length"></div></div>
         <div class="grp"><b>Charms <span id="vCh">None</span></b><div class="row" id="charms" role="group" aria-label="Charms"></div></div>
-        <div class="estbar"><div><span>estimate</span><b id="est">$25</b></div><button class="btn btn-fill" id="useDesign">Order this design</button></div>
+        <div class="estbar"><div><span>estimate</span><b id="est">$15</b></div><button class="btn btn-fill" id="useDesign">Order this design</button></div>
       </div>
     </div>
   </section>
@@ -395,11 +395,11 @@ textarea.inp{min-height:84px;resize:vertical}
     <div class="estim" aria-live="polite">
       <div class="chosen"><span class="lbl">your set</span><span id="eName">Plain colour</span></div>
       <div><span class="lbl" style="margin-bottom:4px">length</span><div class="seg" id="eLen" role="group" aria-label="Length"></div></div>
-      <div class="amt"><span class="lbl">about</span><b id="cOut">$15</b></div>
+      <div class="amt"><span class="lbl">about</span><b id="cOut">$10</b></div>
       <a class="btn btn-white" href="#order">Order</a>
     </div>
     <div class="pfoot" data-stagger>
-      <div class="fineprint"><p><b>Length and shape change the price.</b> Longer sets and fancy shapes take more time and more paint.</p><p>Estimates are a rough guide. I'll confirm your exact price by DM before I start.</p><p>Payment is arranged by DM.</p></div>
+      <div class="fineprint"><p><b>Length and shape change the price.</b> Longer sets and fancy shapes take more time and more paint.</p><p>Estimates are a rough guide. I'll confirm your exact price by DM before I start.</p><p><b>Paying:</b> once I confirm your price, send it by Interac e-Transfer.</p></div>
       <div class="card"><h3>the nail card</h3><p>Buy 5 sets and save 10%. Your 10th set is free. Tap a stamp to fill it up.</p><div class="stamps" id="stamps"></div></div>
     </div>
   </section>
@@ -468,7 +468,7 @@ textarea.inp{min-height:84px;resize:vertical}
             <div class="send">
               <button class="btn btn-fill" id="sendBtn">Send my order</button>
               <a class="btn btn-line" href="https://ig.me/m/foking.good.nails" target="_blank" rel="noopener">DM it to me instead</a>
-              <div class="note"><b>No payment here</b>I'll DM or email you to confirm your price, then you pay me directly.</div>
+              <div class="note"><b>No payment here</b>I'll DM or email you to confirm your price, then you pay by Interac e-Transfer.</div>
               <div class="note"><b>Sending by DM?</b>Press and hold the order card to save it, then send it to @foking.good.nails.</div>
               <p class="err" id="err4"></p>
             </div>
@@ -588,9 +588,9 @@ addEventListener('keydown',e=>{if($('#lb').hidden)return;if(e.key==='Escape')$('
 $('#lbUse').onclick=async e=>{await addInspoSrc(SETS[lbIdx].img);$('#lb').hidden=true;bowBurst(e.clientX,e.clientY,14);nav('order');go(1);toast('Added to your inspo')};
 
 /* ---------- prices ---------- */
-const TYPES=[['Plain colour',15,15,'One colour, glossy or matte','plain'],['French tips',25,25,'Classic tip in any colour','french'],['Simple design',30,35,'Dots, ombre or a little art','simple'],
+const TYPES=[['Plain colour',10,10,'One colour, glossy or matte','plain'],['French tips',15,15,'Classic tip in any colour','french'],['Simple design',30,35,'Dots, ombre or a little art','simple'],
  ['Design, no charms',35,50,'Painted patterns, no 3D bits','design'],['Design with charms',45,60,'Pearls, bows, gems and more','charms'],['Customized',50,70,'Your inspo, fully hand-painted','custom']];
-const LENS=['Short','Medium','Long','Extra long'];let cT=0,cL=0,shown=[15,15];
+const LENS=['Short','Medium','Long','Extra long'];let cT=0,cL=0,shown=[10,10];
 function pills(el,list,get,set,label){list.forEach((v,i)=>{const b=document.createElement('button');b.className='pill';b.textContent=label?label(v):(Array.isArray(v)?v[0]:v);b.setAttribute('aria-pressed',i===get());
   b.onclick=()=>{set(i);el.querySelectorAll('.pill').forEach((x,j)=>x.setAttribute('aria-pressed',j===i))};el.appendChild(b)})}
 function range(){const t=TYPES[cT];let lo=t[1],hi=t[2];if(cL>=2){if(hi===lo)hi=lo+5;else lo=Math.round((lo+hi)/2)}if(cL===3)hi+=5;return[lo,hi]}
@@ -603,7 +603,7 @@ TYPES.forEach((t,i)=>{const b=document.createElement('button');b.className='tile
   b.innerHTML=`<i class="nl ${t[4]}" aria-hidden="true"></i><span><span class="nm">${t[0]}</span><small>${t[3]}</small></span><span class="pr">${fmt(t[1],t[2]).replace('–','-')}</span>`;
   b.onclick=()=>{cT=i;$$('.tile').forEach((x,j)=>x.setAttribute('aria-pressed',j===i));calc()};$(i<3?'#tilesA':'#tilesB').appendChild(b)});
 LENS.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l;b.setAttribute('aria-pressed',i===cL);b.onclick=()=>{cL=i;$$('#eLen button').forEach((x,j)=>x.setAttribute('aria-pressed',j===i));calc()};$('#eLen').appendChild(b)});
-$('#cOut').textContent='$15';
+$('#cOut').textContent='$10';
 for(let i=1;i<=10;i++){const b=document.createElement('button');b.textContent=i===5?'10% off':i===10?'free!':i;b.setAttribute('aria-label','Stamp '+i);
   b.onclick=e=>{$$('#stamps button').forEach((x,j)=>x.classList.toggle('on',j<i));if(i===5||i===10)bowBurst(e.clientX,e.clientY,18)};$('#stamps').appendChild(b)}
 
@@ -626,7 +626,7 @@ function swatches(el,key,nameKey){COLS.forEach(([n,h])=>{const b=document.create
   inp.oninput=()=>{d3[key]=inp.value;d3[nameKey]='Custom '+inp.value;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));lab.style.background=inp.value;clearTimeout(lab._t);lab._t=setTimeout(()=>rebuild('hop'),90)};el.appendChild(lab)}
 swatches($('#baseSw'),'base','baseN');swatches($('#accSw'),'acc','accN');
 $$('#accSw button').forEach(b=>b.setAttribute('aria-pressed',b.title==='Milky white'));
-function estimate(){const st=STYLES[d3.style].id;if(d3.charms.length)return '$45–60';if(st==='solid')return '$15';if(st==='french')return '$25';return '$30–35'}
+function estimate(){const st=STYLES[d3.style].id;if(d3.charms.length)return '$45–60';if(st==='solid')return '$10';if(st==='french')return '$15';return '$30–35'}
 function labels(){$('#vStyle').textContent=STYLES[d3.style].n;$('#vBase').textContent=d3.baseN;$('#vAcc').textContent=d3.accN;$('#vFin').textContent=FIN[d3.fin];$('#vShape').textContent=SHAPES[d3.shape];$('#vLen').textContent=d3.len;$('#vCh').textContent=d3.charms.join(', ')||'None';{const e=$('#est'),n=estimate();if(e.textContent!==n){e.textContent=n;if(!reduce&&e.animate)e.animate([{transform:'scale(1.25)'},{transform:'none'}],{duration:400,easing:'cubic-bezier(.2,.9,.2,1.4)'})}}}
 
 let hasGL=!!(window.THREE&&THREE.OrbitControls),renderer,scene,camera,controls,nailGroup,lid,lidOpen=true,lidT=0,spin=!reduce;
