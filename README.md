@@ -23,8 +23,9 @@ python3 src/build.py
 
 That rebuilds `index.html`. Photos live in `src/photos/`, the logo is `src/logo.webp`.
 
-## Still needed before launch
-- Activate FormSubmit: the first order sends a one-time "Activate form" email to foking.good.nails@gmail.com. Click it, or orders won't arrive
-- Original high-res ambassador photo (the banner uses a crop from a screenshot)
+## Status
+Live and taking orders. Orders (with the order card, inspo and hand photos attached) arrive at foking.good.nails@gmail.com.
+
+## Still to do
+- Custom domain (Marcus is paying for it), connected in Vercel under Settings > Domains
 - Original high-res logo file
-- Her OK to use her Instagram photos
