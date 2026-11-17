@@ -796,25 +796,32 @@ async function buildCard(){const W=1080,H=1500,c=document.createElement('canvas'
   if(d.notes){g.fillStyle='#86606C';g.font='26px "Courier Prime", monospace';g.fillText('Notes',60,y);g.fillStyle='#3A1F28';g.font='28px "DM Sans", sans-serif';let line='',ly=y;for(const w of d.notes.replace(/\n/g,' ').split(/\s+/)){const t=line?line+' '+w:w;if(g.measureText(t).width>690){g.fillText(line,320,ly);ly+=38;line=w;if(ly>y+76)break}else line=t}if(line&&ly<=y+76)g.fillText(line,320,ly)}
   g.fillStyle='#CC4D82';g.font='26px "Courier Prime", monospace';g.textAlign='center';g.fillText('@foking.good.nails · '+new Date().toLocaleDateString(),W/2,H-40);g.textAlign='left';
   cardURL=c.toDataURL('image/jpeg',.88);$('#cardImg').src=cardURL}
+const DONE_MSG="Your order was sent! Now DM me @foking.good.nails to let me know you ordered, and I'll give you your final price. Then you can e-Transfer it to foking.good.nails@gmail.com.";
 $('#sendBtn').onclick=async e=>{const btn=$('#sendBtn'),x=e.clientX,y=e.clientY;$('#err4').textContent='';
   const LIVE=location.protocol==='https:'&&!/claude|localhost|127\.0\.0\.1/.test(location.hostname);
   if(!ORDER_EMAIL||!LIVE){finish('This is a preview, so nothing was sent. On the live site your order card and photos go straight to my email.',x,y);return}
   btn.disabled=true;btn.textContent='Sending...';
-  try{const fd=new FormData();fd.append('_subject','New nail order from '+$('#fName').value.trim());fd.append('_captcha','false');fd.append('_template','table');
-    fd.append('Design',$('#fDesign').value.trim());fd.append('Name',$('#fName').value.trim());fd.append('Instagram',$('#fIg').value.trim());fd.append('email',$('#fEmail').value.trim());fd.append('Need it by',$('#fDate').value);
-    fd.append('Shape',o.shape);fd.append('Length',o.length);fd.append('Extras',o.extras.join(', ')||'None');fd.append('Sizing',o.side+', '+o.coin+' coin, '+o.thumb.length+' photo(s)');fd.append('Notes',$('#fNotes').value.trim()||'-');fd.append('Inspo photos',o.inspo.length+' photo(s), shown on the attached order card');
-    const post=body=>fetch('https://formsubmit.co/ajax/'+encodeURIComponent(ORDER_EMAIL),{method:'POST',body,headers:{Accept:'application/json'}}).then(r=>r.json().catch(()=>({})).then(j=>r.ok&&String(j.success)!=='false'));
-    const withCard=new FormData();for(const [k,v] of fd)withCard.append(k,v);withCard.append('attachment',await (await fetch(cardURL)).blob(),'order-card.jpg');
-    let ok=false,photos=true;try{ok=await post(withCard)}catch(e){}
-    if(!ok){photos=false;fd.set('Inspo photos','Did not attach. Ask them to DM you the order card.');ok=await post(fd)}
-    if(!ok)throw 0;
-    finish(photos?"Your order was sent! Now DM me @foking.good.nails to let me know you ordered, and I'll give you your final price. Then you can e-Transfer it to foking.good.nails@gmail.com."
-      :"Your order was sent, but your photos couldn't attach. Save the order card above and DM it to me @foking.good.nails, and I'll give you your final price. Then you can e-Transfer it to foking.good.nails@gmail.com.",x,y)}
+  try{
+    /* A normal form post (not fetch) so FormSubmit attaches the photos. It sends the customer back to #sent afterwards. */
+    const f=document.createElement('form');f.method='POST';f.action='https://formsubmit.co/'+encodeURIComponent(ORDER_EMAIL);f.enctype='multipart/form-data';f.hidden=true;
+    const add=(k,v)=>{const i=document.createElement('input');i.type='hidden';i.name=k;i.value=v;f.appendChild(i)};
+    add('_subject','New nail order from '+$('#fName').value.trim());add('_captcha','false');add('_template','table');
+    add('_next',location.origin+location.pathname+'#sent');add('_replyto',$('#fEmail').value.trim());
+    add('Design',$('#fDesign').value.trim());add('Name',$('#fName').value.trim());add('Instagram',$('#fIg').value.trim()||'-');add('email',$('#fEmail').value.trim());add('Need it by',$('#fDate').value);
+    add('Shape',o.shape);add('Length',o.length);add('Extras',o.extras.join(', ')||'None');add('Sizing',o.side+', '+o.coin+' coin');add('Notes',$('#fNotes').value.trim()||'-');
+    add('Photos attached','Order card + '+o.inspo.length+' inspo + '+o.thumb.length+' hand photo(s)');
+    const blob=async(src,name)=>new File([await (await fetch(src)).blob()],name,{type:'image/jpeg'});
+    const dt=new DataTransfer();dt.items.add(await blob(cardURL,'order-card.jpg'));
+    for(const [i,src] of o.inspo.entries())dt.items.add(await blob(src,'inspo-'+(i+1)+'.jpg'));
+    for(const [i,src] of o.thumb.entries())dt.items.add(await blob(src,'hand-'+(i+1)+'.jpg'));
+    const fi=document.createElement('input');fi.type='file';fi.name='attachment';fi.multiple=true;fi.files=dt.files;f.appendChild(fi);
+    if(fi.files.length!==dt.files.length)throw 0;
+    document.body.appendChild(f);f.submit()}
   catch(err){$('#err4').textContent="Your order didn't send. Try again, or DM me the order card.";btn.disabled=false;btn.textContent='Send my order'}};
 function finish(msg,x,y){$$('[data-step]').forEach(s=>s.hidden=true);$('#doneMsg').textContent=msg;$('#doneBox').hidden=false;$$('#stepnav li').forEach(li=>{li.classList.remove('on');li.classList.add('done')});bowBurst(x||innerWidth/2,y||innerHeight/2,34)}
 $('#again').onclick=()=>{Object.assign(o,{inspo:[],thumb:[],side:'',coin:'',shape:'',length:'',extras:[]});renderT('inspo');renderT('thumb');$$('.opanel .pill').forEach(x=>x.setAttribute('aria-pressed','false'));['#fName','#fIg','#fEmail','#fDate','#fNotes','#fDesign'].forEach(id=>$(id).value='');const b=$('#sendBtn');b.disabled=false;b.textContent='Send my order';go(1)};
 $('#copyIg').onclick=()=>{(navigator.clipboard?navigator.clipboard.writeText('@foking.good.nails'):Promise.reject()).then(()=>toast('Copied')).catch(()=>toast('@foking.good.nails'))};
 
-go(1);show(location.hash.slice(1)||'home');setTimeout(moveInd,300);
+go(1);if(location.hash==='#sent'){show('order');finish(DONE_MSG);history.replaceState(null,'',location.pathname+'#order')}else show(location.hash.slice(1)||'home');setTimeout(moveInd,300);
 })();
 </script>
