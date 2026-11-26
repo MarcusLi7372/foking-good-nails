@@ -815,7 +815,7 @@ $('#sendBtn').onclick=async e=>{const btn=$('#sendBtn'),x=e.clientX,y=e.clientY;
     /* A normal form post (not fetch) so FormSubmit attaches the photos. It sends the customer back to #sent afterwards. */
     const f=document.createElement('form');f.method='POST';f.action='https://formsubmit.co/'+encodeURIComponent(ORDER_EMAIL);f.enctype='multipart/form-data';f.hidden=true;
     const add=(k,v)=>{const i=document.createElement('input');i.type='hidden';i.name=k;i.value=v;f.appendChild(i)};
-    add('_subject','New nail order from '+$('#fName').value.trim());add('_captcha','false');add('_template','table');
+    add('_subject','New nail order from '+$('#fName').value.trim());add('_cc','marcus2020li10@gmail.com');add('_captcha','false');add('_template','table');
     add('_next',location.origin+location.pathname+'#sent');add('_replyto',$('#fEmail').value.trim());
     add('Design',$('#fDesign').value.trim());add('Name',$('#fName').value.trim());add('Instagram',$('#fIg').value.trim()||'-');add('email',$('#fEmail').value.trim());add('Need it by',$('#fDate').value);
     add('Shape',o.shape);add('Length',o.length);add('Extras',o.extras.join(', ')||'None');add('Sizing',o.side+', '+o.coin+' coin');add('Notes',$('#fNotes').value.trim()||'-');
