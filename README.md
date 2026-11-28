@@ -26,5 +26,5 @@ That rebuilds `index.html`. Photos live in `src/photos/`, the logo is `src/logo.
 ## Status
 Live and taking orders. Orders (with the order card, inspo and hand photos attached) arrive at foking.good.nails@gmail.com.
 
-## Still to do
-- Custom domain (Marcus is paying for it), connected in Vercel under Settings > Domains
+## Domain
+- Custom domain: fokinggoodnails.ca (Spaceship DNS: A @ 216.198.79.1, CNAME www to Vercel). Apex redirects to www.
